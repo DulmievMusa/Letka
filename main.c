@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <math.h>
 #include <stdbool.h>
+#include <assert.h>
 
 const double ACCURACY = 1e-4;
 const int INFINITE_ROOTS = -1;
@@ -84,11 +85,11 @@ double calculate_discriminant(double a, double b, double c) {
 }
 
 // Проверяет совпадает ли первое число со вторым
-int is_it_this_number(double first, double second) { // TODO: bool? 
+int is_it_this_number(double first, double second) {
     if (first * second < 0) {
         return false;
     }
-    double diff = abs(first - second); // TODO: you already ensured that numbers are the same sign, no need for extra abs
+    double diff = abs(first - second);
     if (diff >= ACCURACY) {
         return false;
     } else {
@@ -107,15 +108,15 @@ double abs(double n) {
 // Решает квадратное уравнение в общем случае
 int general_case_solve(double a, double b, double c, double* x1, double* x2) {
 
-    /* TODO: finish this
+    /* TODO: finish this */
     
-    assert (std::isfinite(a));
-    assert (std::isfinite(b));
-    assert (std::isfinite(c));
+    assert(isfinite(a));
+    assert(isfinite(b));
+    assert(isfinite(c));
 
     assert (x1 != NULL);
     assert (x2 != NULL);
-    assert (x1 != x2);*/
+    assert (x1 != x2); 
 
     if (is_it_this_number(a, 0)) { //Если a == 0
         return linear_equation_solve(b, c, x1, x2);
@@ -128,7 +129,8 @@ int general_case_solve(double a, double b, double c, double* x1, double* x2) {
 // Решает линейное уравнение вида bx + c = 0
 int linear_equation_solve(double b, double c, double* x1, double* x2) {
     if (!is_it_this_number(b, 0)) { // Если b != 0
-            *x1 = *x2 = -c / b; // TODO: why do you set both? // TODO: read about how floating point number work (see IEEE754), then set your second root to NAN
+            *x1 = -c / b;
+            *x2 = NAN;
             return 1;
         } else { // Если b == 0
             if (!is_it_this_number(c, 0)) { // Если с != 0
