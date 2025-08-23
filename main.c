@@ -6,6 +6,10 @@
 const double ACCURACY = 1e-4;
 const int INFINITE_ROOTS = -1;
 
+// int a[] = {7, 8, 9};
+// a[][3] = {{1, 2, 3}, {3,4,5}}
+
+// a[1][2]
 bool sort_roots_rising(double* x1, double* x2);
 bool test_general_solve();
 double calculate_discriminant(double a, double b, double c);
@@ -117,9 +121,9 @@ int general_case_solve(double a, double b, double c, double* x1, double* x2) {
     assert(isfinite(b));
     assert(isfinite(c));
 
-    assert (x1 != NULL);
-    assert (x2 != NULL);
-    assert (x1 != x2); 
+    assert(x1 != NULL);
+    assert(x2 != NULL);
+    assert(x1 != x2); 
 
     if (is_it_this_number(a, 0)) { //Если a == 0
         return linear_equation_solve(b, c, x1, x2);
@@ -162,20 +166,63 @@ int quadratic_equation_solve(double a, double b, double c, double* x1, double* x
 }
 
 bool test_general_solve() {
-    double x1 = 0, x2 = 0;
-    int n;
-    // test 1
-    n = general_case_solve(1.0, -8.0, -9.0, &x1, &x2);
+    double x1 = 0, x2 = 0, a = 0, b = 0, c = 0, check_result = 0;
+    int n = 0, count = 1;
+    const int count_of_tests = 3; // количество тестов
+    bool flag = false;
+    double tests[count_of_tests][4] = {{1, -8, -9, 2}, {0, 0, 0, -1}, {9, 1, 10, 0}}; 
 
-    sort_roots_rising(&x1, &x2);
-    if (is_it_this_number(n, 2) && is_it_this_number(x1, -1) && is_it_this_number(x2, 9)) {
-        printf("first test passed\n");
+    for (int i=0; i < count_of_tests; i++) {
+        flag = false;
+        // printf("%d\n", count); // Номер теста
+        a = tests[i][0]; b = tests[i][1]; c = tests[i][2];
+        int true_count_of_roots = tests[i][3];
+        n = general_case_solve(a, b, c, &x1, &x2);
+        if (n != true_count_of_roots) { // Если количество корней найдено неверно
+            printf("Test number %d faled\n", count);
+            printf("Program think that equation have %d roots\n", n);
+            printf("But it must have %d roots\n", true_count_of_roots);
+            printf("\n");
+        } else { // Если количество корней найдено верно
+            switch (n)
+            {
+            case 2:
+                check_result = a*(x1*x1) + b*x1 + c;
+                if (!is_it_this_number(check_result, 0)) {
+                    printf("Test number %d faled\n", count);
+                    printf("First root doesn't fit\n");
+                    flag = true;
+                }
+                check_result = a*(x2*x2) + b*x2 + c;
+                if (!is_it_this_number(check_result, 0)) {
+                    if (!flag){
+                        printf("Test number %d faled\n", count);
+                    }
+                    printf("Second root doesn't fit\n");
+                }
+                break;
+            case 1:
+                check_result = a*(x1*x1) + b*x1 + c;
+                if (!is_it_this_number(check_result, 0)) {
+                    printf("Test number %d faled\n", count);
+                    printf("Root doesn't fit\n");
+                }
+                break;
+            }
+        }
+        count++;
+        
     }
+    
+
     return true;
 }
 
 // Сортирует два корня по возрастанию. Первый становится меньше второго
 bool sort_roots_rising(double* x1, double* x2) {
+    if (*x2 == NAN) { // *
+        return false;
+    }
     double buffer = 0;
     if (*x1 > *x2) {
         buffer = *x2;
