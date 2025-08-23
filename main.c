@@ -18,7 +18,6 @@ int print_roots(int n, double x1, double x2);
 int main() {
     double a = 0, b = 0, c = 0, x1 = 0, x2 = 0;
     int n = 0, flag = 0;
-    printf("testttttt");
     printf("This program solve quad. equation ax^2+bx+c=0\n");
     printf("Input coefficient a, coefficient b, coefficient c in different lines:\n");
     
