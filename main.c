@@ -11,14 +11,13 @@ double abs(double n);
 int general_case_solve(double a, double b, double c, double* x1, double* x2);
 int linear_equation_solve(double b, double c, double* x1, double* x2);
 int quadratic_equation_solve(double a, double b, double c, double* x1, double* x2);
-int correct_input(double* a, char symbol); // TODO: better name?
-int input_coefficients(double* a, double* b, double* c); // TODO: better name?
-int print_result(int n, double x1, double x2); // TODO: better name?
+int correct_input_a_number(double* a, char symbol);
+int input_coefficients(double* a, double* b, double* c);
+int print_roots(int n, double x1, double x2);
 
 int main() {
     double a = 0, b = 0, c = 0, x1 = 0, x2 = 0;
     int n = 0, flag = 0;
-    printf("test2\n"); // TODO: don't forget to remove test logs, also you could make a macro that removes them automatically when you build in release
     printf("This program solve quad. equation ax^2+bx+c=0\n");
     printf("Input coefficient a, coefficient b, coefficient c in different lines:\n");
     
@@ -28,7 +27,7 @@ int main() {
 
     n = general_case_solve(a, b, c, &x1, &x2); // Решение уравнения
     
-    print_result(n, x1, x2);
+    print_roots(n, x1, x2);
 
     return 0;
 }
@@ -36,28 +35,32 @@ int main() {
 // Ввод коэффициентов
 int input_coefficients(double* a, double* b, double* c) {
     printf("a: ");
-    correct_input(a, 'a');
+    correct_input_a_number(a, 'a');
     printf("b: ");
-    correct_input(b, 'b');
+    correct_input_a_number(b, 'b');
     printf("c: ");
-    correct_input(c, 'c');
+    correct_input_a_number(c, 'c');
     return 0;
 }
 
 //Проверка правильного ввода
-int correct_input(double* a, char symbol) {
+int correct_input_a_number(double* a, char symbol) {
+    int ch;
     while (scanf("%lg", a) == 0) { // NOTE: scanf("%lg%c", a, symbol)... symbol == '\n'?
         printf("You entered not a number. Try again\n");
         printf("%c: ", symbol);
-        while (getchar() != '\n'); // TODO: extract, what about EOF?
+        ch = getchar();
+        while (ch != '\n' && ch != EOF)
+            ch = getchar();
     }
-    if (getchar() != '\n') { // TODO: why do you require two newlines in a row?
-        correct_input(a, symbol);
+    ch = getchar();
+    if (ch != '\n' &&  ch != EOF) { // TODO: why do you require two newlines in a row?
+        correct_input_a_number(a, symbol);
     }
     return 0;}
 
 // Вывод результата
-int print_result(int n, double x1, double x2) {
+int print_roots(int n, double x1, double x2) {
     if (n == 2) { // TODO: switch..case?
         printf("Equation have two roots:\nx1=%g\nx2=%g", x1, x2);
     } else if (n == 1) {
