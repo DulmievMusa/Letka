@@ -43,6 +43,13 @@ int main() {
 
 // Ввод коэффициентов
 int input_coefficients(double* a, double* b, double* c) {
+    
+    assert(a != NULL);
+    assert(b != NULL);
+    assert(c != NULL);
+
+    assert(a != b && b != c && a != c);
+
     printf("a: ");
     correct_input_a_number(a, 'a');
     printf("b: ");
@@ -54,6 +61,9 @@ int input_coefficients(double* a, double* b, double* c) {
 
 //Проверка правильного ввода
 int correct_input_a_number(double* a, char symbol) {
+
+    assert(a != NULL);
+
     int ch;
     while (scanf("%lg", a) == 0) { // NOTE: scanf("%lg%c", a, symbol)... symbol == '\n'?
         printf("You entered not a number. Try again\n");
@@ -71,6 +81,10 @@ int correct_input_a_number(double* a, char symbol) {
 
 // Вывод результата
 int print_roots(int n, double x1, double x2) {
+    
+    assert(isfinite(x1));
+    assert(isfinite(x2));
+
     switch (n) {
         case 2: 
             printf("Equation have two roots:\nx1=%g\nx2=%g", x1, x2);
@@ -90,11 +104,19 @@ int print_roots(int n, double x1, double x2) {
 
 // Считает дискриминант
 double calculate_discriminant(double a, double b, double c) {
+    assert(isfinite(a));
+    assert(isfinite(b));
+    assert(isfinite(c));
+
     return b*b - 4*a*c;
 }
 
 // Проверяет совпадает ли первое число со вторым
 bool is_it_this_number(double first, double second) {
+
+    assert(isfinite(first));
+    assert(isfinite(second));
+
     if (first * second < 0) {
         return false;
     }
@@ -108,6 +130,9 @@ bool is_it_this_number(double first, double second) {
 
 // Модуль числа
 double abs(double n) {
+
+    assert(isfinite(n));
+
     if (n < 0) {
         n = -n;
     }
@@ -116,8 +141,6 @@ double abs(double n) {
 
 // Решает квадратное уравнение в общем случае
 int general_case_solve(double a, double b, double c, double* x1, double* x2) {
-
-    /* TODO: finish this */
     
     assert(isfinite(a));
     assert(isfinite(b));
@@ -137,6 +160,14 @@ int general_case_solve(double a, double b, double c, double* x1, double* x2) {
 
 // Решает линейное уравнение вида bx + c = 0
 int linear_equation_solve(double b, double c, double* x1, double* x2) {
+
+    assert(isfinite(b));
+    assert(isfinite(c));
+
+    assert(x1 != NULL);
+    assert(x2 != NULL);
+    assert(x1 != x2); 
+
     if (!is_it_this_number(b, 0)) { // Если b != 0
             *x1 = -c / b;
             *x2 = NAN;
@@ -152,6 +183,15 @@ int linear_equation_solve(double b, double c, double* x1, double* x2) {
 
 // Решает квадратное уравнение вида ax^2 + bx + c = 0
 int quadratic_equation_solve(double a, double b, double c, double* x1, double* x2) {
+
+    assert(isfinite(a));
+    assert(isfinite(b));
+    assert(isfinite(c));
+
+    assert(x1 != NULL);
+    assert(x2 != NULL);
+    assert(x1 != x2); 
+
     double dis = 0;
     dis = calculate_discriminant(a, b, c);
     if (dis > 0) {
@@ -169,21 +209,21 @@ int quadratic_equation_solve(double a, double b, double c, double* x1, double* x
 
 bool test_general_solve() {
     double x1 = 0, x2 = 0, a = 0, b = 0, c = 0, check_result = 0;
-    int n = 0, count = 1;
+    int supposed_count_of_roots = 0, count = 1;
     bool flag = false;
-    double tests[][4] = {{1, -8, -9, 2}, {0, 0, 0, -1}, {9, 1, 10, 0}};
+    double tests[][4] = {{1, -8, -9, 2}, {0, 0, 0, -1}, {9, 1, 10, 0},
+                         {1, -8, -9, 1}, {0, 0, 0, 0}, {9, 1, 10, 1}};
     const int count_of_tests = sizeof(tests) / sizeof(tests[0]); 
 
     for (int i=0; i < count_of_tests; i++) {
         flag = false;
-        // printf("%d\n", count); // Номер теста
         a = tests[i][0]; b = tests[i][1]; c = tests[i][2];
         int true_count_of_roots = tests[i][3];
-        n = general_case_solve(a, b, c, &x1, &x2);
-        if (n != true_count_of_roots) { // Если количество корней найдено неверно
-            incorrect_number_of_roots_print(true_count_of_roots, n, count);
+        supposed_count_of_roots = general_case_solve(a, b, c, &x1, &x2);
+        if (supposed_count_of_roots != true_count_of_roots) { // Если количество корней найдено неверно
+            incorrect_number_of_roots_print(true_count_of_roots, supposed_count_of_roots, count);
         } else { // Если количество корней найдено верно
-            switch (n)
+            switch (supposed_count_of_roots)
             {
             case 2:
                 check_result = a*(x1*x1) + b*x1 + c;
@@ -217,39 +257,23 @@ bool test_general_solve() {
     return true;
 }
 
-// Сортирует два корня по возрастанию. Первый становится меньше второго
-bool sort_roots_rising(double* x1, double* x2) {
-    if (*x2 == NAN) { // *
-        return false;
-    }
-    double buffer = 0;
-    if (*x1 > *x2) {
-        buffer = *x2;
-        *x2 = *x1;
-        *x1 = buffer;
-        return true;
-    } else {
-        return false;
-    }
-}
-
 int incorrect_number_of_roots_print(int true_count, int false_count, int number_of_test) {
     printf("Test number %d faled\n", number_of_test);
-    if (is_it_this_number(false_count, 2) || is_it_this_number(false_count, 1)) {
+    if (false_count == 2 || false_count == 1) {
         printf("Program thinks that equation have %d roots\n", false_count);
-    } else if (is_it_this_number(false_count, 0)) {
+    } else if (false_count == 0) {
         printf("Program thinks that equation doesn't have any roots\n");
-    } else if (is_it_this_number(false_count, -1)) {
+    } else if (false_count == -1) {
         printf("Program thinks that equation have infinite roots\n");
     }
     
     
 
-    if (is_it_this_number(true_count, 2) || is_it_this_number(true_count, 1)) {
+    if (true_count == 2 || true_count == 1) {
         printf("But it must have %d roots\n", true_count);
-    } else if (is_it_this_number(true_count, 0)) {
+    } else if (true_count == 0) {
         printf("But it must have no roots\n");
-    } else if (is_it_this_number(true_count, -1)) {
+    } else if (true_count == -1) {
         printf("But it must have infinite roots\n");
     }
 
