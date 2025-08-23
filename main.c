@@ -6,8 +6,10 @@
 const double ACCURACY = 1e-4;
 const int INFINITE_ROOTS = -1;
 
+bool sort_roots_rising(double* x1, double* x2);
+bool test_general_solve();
 double calculate_discriminant(double a, double b, double c);
-int is_it_this_number(double first, double second);
+bool is_it_this_number(double first, double second);
 double abs(double n);
 int general_case_solve(double a, double b, double c, double* x1, double* x2);
 int linear_equation_solve(double b, double c, double* x1, double* x2);
@@ -17,6 +19,7 @@ int input_coefficients(double* a, double* b, double* c);
 int print_roots(int n, double x1, double x2);
 
 int main() {
+    test_general_solve();
     double a = 0, b = 0, c = 0, x1 = 0, x2 = 0;
     int n = 0, flag = 0;
     printf("This program solve quad. equation ax^2+bx+c=0\n");
@@ -85,7 +88,7 @@ double calculate_discriminant(double a, double b, double c) {
 }
 
 // Проверяет совпадает ли первое число со вторым
-int is_it_this_number(double first, double second) {
+bool is_it_this_number(double first, double second) {
     if (first * second < 0) {
         return false;
     }
@@ -155,6 +158,32 @@ int quadratic_equation_solve(double a, double b, double c, double* x1, double* x
         return 1;
     } else {
         return 0;
+    }
+}
+
+bool test_general_solve() {
+    double x1 = 0, x2 = 0;
+    int n;
+    // test 1
+    n = general_case_solve(1.0, -8.0, -9.0, &x1, &x2);
+
+    sort_roots_rising(&x1, &x2);
+    if (is_it_this_number(n, 2) && is_it_this_number(x1, -1) && is_it_this_number(x2, 9)) {
+        printf("first test passed\n");
+    }
+    return true;
+}
+
+// Сортирует два корня по возрастанию. Первый становится меньше второго
+bool sort_roots_rising(double* x1, double* x2) {
+    double buffer = 0;
+    if (*x1 > *x2) {
+        buffer = *x2;
+        *x2 = *x1;
+        *x1 = buffer;
+        return true;
+    } else {
+        return false;
     }
 }
 
