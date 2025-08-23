@@ -21,6 +21,7 @@ int quadratic_equation_solve(double a, double b, double c, double* x1, double* x
 int correct_input_a_number(double* a, char symbol);
 int input_coefficients(double* a, double* b, double* c);
 int print_roots(int n, double x1, double x2);
+int incorrect_number_of_roots_print(int true_count, int false_count, int number_of_test);
 
 int main() {
     test_general_solve();
@@ -65,7 +66,8 @@ int correct_input_a_number(double* a, char symbol) {
     if (ch != '\n' &&  ch != EOF) { // TODO: why do you require two newlines in a row?
         correct_input_a_number(a, symbol);
     }
-    return 0;}
+    return 0;
+}
 
 // Вывод результата
 int print_roots(int n, double x1, double x2) {
@@ -77,7 +79,7 @@ int print_roots(int n, double x1, double x2) {
             printf("Equation have one root:\nx=%g", x1);
             break;
         case 0:
-            printf("Equation have not roots");
+            printf("Equation have no roots");
             break;
         case -1:
             printf("Equation have infinite roots");
@@ -168,9 +170,9 @@ int quadratic_equation_solve(double a, double b, double c, double* x1, double* x
 bool test_general_solve() {
     double x1 = 0, x2 = 0, a = 0, b = 0, c = 0, check_result = 0;
     int n = 0, count = 1;
-    const int count_of_tests = 3; // количество тестов
     bool flag = false;
-    double tests[count_of_tests][4] = {{1, -8, -9, 2}, {0, 0, 0, -1}, {9, 1, 10, 0}}; 
+    double tests[][4] = {{1, -8, -9, 2}, {0, 0, 0, -1}, {9, 1, 10, 0}};
+    const int count_of_tests = sizeof(tests) / sizeof(tests[0]); 
 
     for (int i=0; i < count_of_tests; i++) {
         flag = false;
@@ -179,10 +181,7 @@ bool test_general_solve() {
         int true_count_of_roots = tests[i][3];
         n = general_case_solve(a, b, c, &x1, &x2);
         if (n != true_count_of_roots) { // Если количество корней найдено неверно
-            printf("Test number %d faled\n", count);
-            printf("Program think that equation have %d roots\n", n);
-            printf("But it must have %d roots\n", true_count_of_roots);
-            printf("\n");
+            incorrect_number_of_roots_print(true_count_of_roots, n, count);
         } else { // Если количество корней найдено верно
             switch (n)
             {
@@ -198,7 +197,7 @@ bool test_general_solve() {
                     if (!flag){
                         printf("Test number %d faled\n", count);
                     }
-                    printf("Second root doesn't fit\n");
+                    printf("%s Second root doesn't fit\n", "aaa");
                 }
                 break;
             case 1:
@@ -232,5 +231,29 @@ bool sort_roots_rising(double* x1, double* x2) {
     } else {
         return false;
     }
+}
+
+int incorrect_number_of_roots_print(int true_count, int false_count, int number_of_test) {
+    printf("Test number %d faled\n", number_of_test);
+    if (is_it_this_number(false_count, 2) || is_it_this_number(false_count, 1)) {
+        printf("Program thinks that equation have %d roots\n", false_count);
+    } else if (is_it_this_number(false_count, 0)) {
+        printf("Program thinks that equation doesn't have any roots\n");
+    } else if (is_it_this_number(false_count, -1)) {
+        printf("Program thinks that equation have infinite roots\n");
+    }
+    
+    
+
+    if (is_it_this_number(true_count, 2) || is_it_this_number(true_count, 1)) {
+        printf("But it must have %d roots\n", true_count);
+    } else if (is_it_this_number(true_count, 0)) {
+        printf("But it must have no roots\n");
+    } else if (is_it_this_number(true_count, -1)) {
+        printf("But it must have infinite roots\n");
+    }
+
+
+    printf("\n");
 }
 
