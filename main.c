@@ -61,14 +61,19 @@ int correct_input_a_number(double* a, char symbol) {
 
 // Вывод результата
 int print_roots(int n, double x1, double x2) {
-    if (n == 2) { // TODO: switch..case?
-        printf("Equation have two roots:\nx1=%g\nx2=%g", x1, x2);
-    } else if (n == 1) {
-        printf("Equation have one root:\nx=%g", x1);
-    } else if (n == 0) {
-        printf("Equation have not roots");
-    } else if (n == -1) {
-        printf("Equation have infinite roots");
+    switch (n) {
+        case 2: 
+            printf("Equation have two roots:\nx1=%g\nx2=%g", x1, x2);
+            break;
+        case 1:
+            printf("Equation have one root:\nx=%g", x1);
+            break;
+        case 0:
+            printf("Equation have not roots");
+            break;
+        case -1:
+            printf("Equation have infinite roots");
+            break;
     }
 }
 
