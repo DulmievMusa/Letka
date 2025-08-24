@@ -22,9 +22,15 @@ int correct_input_a_number(double* a, char symbol);
 int input_coefficients(double* a, double* b, double* c);
 int print_roots(int n, double x1, double x2);
 int incorrect_number_of_roots_print(int true_count, int false_count, int number_of_test);
+int correct_number_of_roots_print(int supposed_count_of_roots,
+                                    double a, double b, double c,
+                                    double supposed_x1, double supposed_x2,
+                                    double true_x1, double true_x2,
+                                    int count);
+int run_tests(); 
 
 int main() {
-    test_general_solve();
+    run_tests();
     double a = 0, b = 0, c = 0, x1 = 0, x2 = 0;
     int n = 0, flag = 0;
     printf("This program solve quad. equation ax^2+bx+c=0\n");
@@ -148,7 +154,9 @@ int general_case_solve(double a, double b, double c, double* x1, double* x2) {
 
     assert(x1 != NULL);
     assert(x2 != NULL);
-    assert(x1 != x2); 
+    assert(x1 != x2);
+    *x1 = 0; // Удалить, если всё сломалось
+    *x2 = 0; // Удалить, если всё сломалось 
 
     if (is_it_this_number(a, 0)) { //Если a == 0
         return linear_equation_solve(b, c, x1, x2);
@@ -207,47 +215,53 @@ int quadratic_equation_solve(double a, double b, double c, double* x1, double* x
     }
 }
 
+int run_tests() {
+    test_general_solve();
+    return 1;
+}
+
+// Сортирует два корня по возрастанию. Первый становится меньше второго
+bool sort_roots_rising(double* x1, double* x2) {
+    if (*x2 == NAN) { // *
+        return false;
+    }
+    double buffer = 0;
+    if (*x1 > *x2) {
+        buffer = *x2;
+        *x2 = *x1;
+        *x1 = buffer;
+        return true;
+    } else {
+        return false;
+    }
+}
+
 bool test_general_solve() {
-    double x1 = 0, x2 = 0, a = 0, b = 0, c = 0, check_result = 0;
+    double supposed_x1 = 0, supposed_x2 = 0, a = 0, b = 0, c = 0, check_result = 0;
     int supposed_count_of_roots = 0, count = 1;
     bool flag = false;
-    double tests[][4] = {{1, -8, -9, 2}, {0, 0, 0, -1}, {9, 1, 10, 0},
-                         {1, -8, -9, 1}, {0, 0, 0, 0}, {9, 1, 10, 1}};
+    double tests[][6] = {{1, -8, -9, 2, -1, 9}, {0, 0, 0, -1, 0, 0}, {9, 1, 10, 0, 0, 0},
+                         {1, -8, -9, 1, 0, 0}, {0, 0, 0, 0, 0, 0}, {9, 1, 10, 1, 0, 0}};
     const int count_of_tests = sizeof(tests) / sizeof(tests[0]); 
 
     for (int i=0; i < count_of_tests; i++) {
         flag = false;
         a = tests[i][0]; b = tests[i][1]; c = tests[i][2];
         int true_count_of_roots = tests[i][3];
-        supposed_count_of_roots = general_case_solve(a, b, c, &x1, &x2);
+        double true_x1 = tests[i][4], true_x2 = tests[i][5];
+        supposed_count_of_roots = general_case_solve(a, b, c, &supposed_x1, &supposed_x2);
+
         if (supposed_count_of_roots != true_count_of_roots) { // Если количество корней найдено неверно
+            printf("Test number %d faled\n", count);
+            printf("coefficients: a=%lg , b=%lg, c=%lg\n", a, b, c);
             incorrect_number_of_roots_print(true_count_of_roots, supposed_count_of_roots, count);
         } else { // Если количество корней найдено верно
-            switch (supposed_count_of_roots)
-            {
-            case 2:
-                check_result = a*(x1*x1) + b*x1 + c;
-                if (!is_it_this_number(check_result, 0)) {
-                    printf("Test number %d faled\n", count);
-                    printf("First root doesn't fit\n");
-                    flag = true;
-                }
-                check_result = a*(x2*x2) + b*x2 + c;
-                if (!is_it_this_number(check_result, 0)) {
-                    if (!flag){
-                        printf("Test number %d faled\n", count);
-                    }
-                    printf("%s Second root doesn't fit\n", "aaa");
-                }
-                break;
-            case 1:
-                check_result = a*(x1*x1) + b*x1 + c;
-                if (!is_it_this_number(check_result, 0)) {
-                    printf("Test number %d faled\n", count);
-                    printf("Root doesn't fit\n");
-                }
-                break;
+            if (!is_it_this_number(true_count_of_roots, 0) && !is_it_this_number(true_count_of_roots, -1)){
+                correct_number_of_roots_print(supposed_count_of_roots,
+                                             a, b, c, supposed_x1, supposed_x2,
+                                            true_x1, true_x2, count);
             }
+            
         }
         count++;
         
@@ -258,7 +272,6 @@ bool test_general_solve() {
 }
 
 int incorrect_number_of_roots_print(int true_count, int false_count, int number_of_test) {
-    printf("Test number %d faled\n", number_of_test);
     if (false_count == 2 || false_count == 1) {
         printf("Program thinks that equation have %d roots\n", false_count);
     } else if (false_count == 0) {
@@ -281,3 +294,38 @@ int incorrect_number_of_roots_print(int true_count, int false_count, int number_
     printf("\n");
 }
 
+
+int correct_number_of_roots_print(int supposed_count_of_roots,
+                                    double a, double b, double c,
+                                    double supposed_x1, double supposed_x2,
+                                    double true_x1, double true_x2,
+                                    int count) {
+    
+    sort_roots_rising(&supposed_x1, &supposed_x2);
+    sort_roots_rising(&true_x1, &true_x2);
+    if (!is_it_this_number(supposed_x1, true_x1) || !is_it_this_number(supposed_x2, true_x2)) {
+                    printf("Test number %d faled\n", count);
+                    printf("Coefficients: a=%lg , b=%lg, c=%lg\n", a, b, c);
+                    printf("Program found %d root(s)\n", supposed_count_of_roots);
+                }                                    
+                
+    switch (supposed_count_of_roots)
+            {
+            case 2:
+                
+                if (!is_it_this_number(supposed_x1, true_x1)) {
+                    printf("First root doesn't fit. True value: %lg. Received value: %lg\n", true_x1, supposed_x1);
+                }
+                if (!is_it_this_number(supposed_x2, true_x2)) {
+                    printf("Second root doesn't fit. True value: %lg. Received value: %lg\n", true_x2, supposed_x2);
+                }
+                break;
+            case 1:
+
+                if (!is_it_this_number(supposed_x1, true_x1)) {
+                    printf("Root doesn't fit. True value: %lg. Received value: %lg\n", true_x1, supposed_x1);
+                }
+                break;
+            }
+        printf("\n");
+}
