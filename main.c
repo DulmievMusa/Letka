@@ -2,32 +2,18 @@
 #include <math.h>
 #include <stdbool.h>
 #include <assert.h>
+#include "tests.h"
+#include "funcs.h"
 
 const double ACCURACY = 1e-4;
 const int INFINITE_ROOTS = -1;
 
-// int a[] = {7, 8, 9};
-// a[][3] = {{1, 2, 3}, {3,4,5}}
-
-// a[1][2]
-bool sort_roots_rising(double* x1, double* x2);
-bool test_general_solve();
-double calculate_discriminant(double a, double b, double c);
-bool is_it_this_number(double first, double second);
-double abs(double n);
-int general_case_solve(double a, double b, double c, double* x1, double* x2);
-int linear_equation_solve(double b, double c, double* x1, double* x2);
-int quadratic_equation_solve(double a, double b, double c, double* x1, double* x2);
 int correct_input_a_number(double* a, char symbol);
 int input_coefficients(double* a, double* b, double* c);
 int print_roots(int n, double x1, double x2);
-int incorrect_number_of_roots_print(int true_count, int false_count, int number_of_test);
-int correct_number_of_roots_print(int supposed_count_of_roots,
-                                    double a, double b, double c,
-                                    double supposed_x1, double supposed_x2,
-                                    double true_x1, double true_x2,
-                                    int count);
-int run_tests(); 
+
+
+
 
 int main() {
     run_tests();
@@ -108,224 +94,18 @@ int print_roots(int n, double x1, double x2) {
 }
 
 
-// Считает дискриминант
-double calculate_discriminant(double a, double b, double c) {
-    assert(isfinite(a));
-    assert(isfinite(b));
-    assert(isfinite(c));
-
-    return b*b - 4*a*c;
-}
-
-// Проверяет совпадает ли первое число со вторым
-bool is_it_this_number(double first, double second) {
-
-    assert(isfinite(first));
-    assert(isfinite(second));
-
-    if (first * second < 0) {
-        return false;
-    }
-    double diff = abs(first - second);
-    if (diff >= ACCURACY) {
-        return false;
-    } else {
-        return true;
-    }
-}
-
-// Модуль числа
-double abs(double n) {
-
-    assert(isfinite(n));
-
-    if (n < 0) {
-        n = -n;
-    }
-    return n;
-}
-
-// Решает квадратное уравнение в общем случае
-int general_case_solve(double a, double b, double c, double* x1, double* x2) {
-    
-    assert(isfinite(a));
-    assert(isfinite(b));
-    assert(isfinite(c));
-
-    assert(x1 != NULL);
-    assert(x2 != NULL);
-    assert(x1 != x2);
-    *x1 = 0; // Удалить, если всё сломалось
-    *x2 = 0; // Удалить, если всё сломалось 
-
-    if (is_it_this_number(a, 0)) { //Если a == 0
-        return linear_equation_solve(b, c, x1, x2);
-    } else { // Если a != 0
-        return quadratic_equation_solve(a, b, c, x1, x2);
-    } 
-
-}
-
-// Решает линейное уравнение вида bx + c = 0
-int linear_equation_solve(double b, double c, double* x1, double* x2) {
-
-    assert(isfinite(b));
-    assert(isfinite(c));
-
-    assert(x1 != NULL);
-    assert(x2 != NULL);
-    assert(x1 != x2); 
-
-    if (!is_it_this_number(b, 0)) { // Если b != 0
-            *x1 = -c / b;
-            *x2 = NAN;
-            return 1;
-        } else { // Если b == 0
-            if (!is_it_this_number(c, 0)) { // Если с != 0
-                return 0;
-            } else { // Если c == 0
-                return INFINITE_ROOTS; // Бесконечное количество корней
-            }
-        }
-}
-
-// Решает квадратное уравнение вида ax^2 + bx + c = 0
-int quadratic_equation_solve(double a, double b, double c, double* x1, double* x2) {
-
-    assert(isfinite(a));
-    assert(isfinite(b));
-    assert(isfinite(c));
-
-    assert(x1 != NULL);
-    assert(x2 != NULL);
-    assert(x1 != x2); 
-
-    double dis = 0;
-    dis = calculate_discriminant(a, b, c);
-    if (dis > 0) {
-        double sqrt_dis = sqrt(dis);
-        *x1 = (-b + sqrt_dis) / (2*a);
-        *x2 = (-b - sqrt_dis) / (2*a);
-        return 2;
-    } else if (is_it_this_number(dis, 0)) {
-        *x1 = *x2 = -b / (2*a);
-        return 1;
-    } else {
-        return 0;
-    }
-}
-
-int run_tests() {
-    test_general_solve();
-    return 1;
-}
-
-// Сортирует два корня по возрастанию. Первый становится меньше второго
-bool sort_roots_rising(double* x1, double* x2) {
-    if (*x2 == NAN) { // *
-        return false;
-    }
-    double buffer = 0;
-    if (*x1 > *x2) {
-        buffer = *x2;
-        *x2 = *x1;
-        *x1 = buffer;
-        return true;
-    } else {
-        return false;
-    }
-}
-
-bool test_general_solve() {
-    double supposed_x1 = 0, supposed_x2 = 0, a = 0, b = 0, c = 0, check_result = 0;
-    int supposed_count_of_roots = 0, count = 1;
-    bool flag = false;
-    double tests[][6] = {{1, -8, -9, 2, -1, 9}, {0, 0, 0, -1, 0, 0}, {9, 1, 10, 0, 0, 0},
-                         {1, -8, -9, 1, 0, 0}, {0, 0, 0, 0, 0, 0}, {9, 1, 10, 1, 0, 0}};
-    const int count_of_tests = sizeof(tests) / sizeof(tests[0]); 
-
-    for (int i=0; i < count_of_tests; i++) {
-        flag = false;
-        a = tests[i][0]; b = tests[i][1]; c = tests[i][2];
-        int true_count_of_roots = tests[i][3];
-        double true_x1 = tests[i][4], true_x2 = tests[i][5];
-        supposed_count_of_roots = general_case_solve(a, b, c, &supposed_x1, &supposed_x2);
-
-        if (supposed_count_of_roots != true_count_of_roots) { // Если количество корней найдено неверно
-            printf("Test number %d faled\n", count);
-            printf("coefficients: a=%lg , b=%lg, c=%lg\n", a, b, c);
-            incorrect_number_of_roots_print(true_count_of_roots, supposed_count_of_roots, count);
-        } else { // Если количество корней найдено верно
-            if (!is_it_this_number(true_count_of_roots, 0) && !is_it_this_number(true_count_of_roots, -1)){
-                correct_number_of_roots_print(supposed_count_of_roots,
-                                             a, b, c, supposed_x1, supposed_x2,
-                                            true_x1, true_x2, count);
-            }
-            
-        }
-        count++;
-        
-    }
-    
-
-    return true;
-}
-
-int incorrect_number_of_roots_print(int true_count, int false_count, int number_of_test) {
-    if (false_count == 2 || false_count == 1) {
-        printf("Program thinks that equation have %d roots\n", false_count);
-    } else if (false_count == 0) {
-        printf("Program thinks that equation doesn't have any roots\n");
-    } else if (false_count == -1) {
-        printf("Program thinks that equation have infinite roots\n");
-    }
-    
-    
-
-    if (true_count == 2 || true_count == 1) {
-        printf("But it must have %d roots\n", true_count);
-    } else if (true_count == 0) {
-        printf("But it must have no roots\n");
-    } else if (true_count == -1) {
-        printf("But it must have infinite roots\n");
-    }
 
 
-    printf("\n");
-}
 
 
-int correct_number_of_roots_print(int supposed_count_of_roots,
-                                    double a, double b, double c,
-                                    double supposed_x1, double supposed_x2,
-                                    double true_x1, double true_x2,
-                                    int count) {
-    
-    sort_roots_rising(&supposed_x1, &supposed_x2);
-    sort_roots_rising(&true_x1, &true_x2);
-    if (!is_it_this_number(supposed_x1, true_x1) || !is_it_this_number(supposed_x2, true_x2)) {
-                    printf("Test number %d faled\n", count);
-                    printf("Coefficients: a=%lg , b=%lg, c=%lg\n", a, b, c);
-                    printf("Program found %d root(s)\n", supposed_count_of_roots);
-                }                                    
-                
-    switch (supposed_count_of_roots)
-            {
-            case 2:
-                
-                if (!is_it_this_number(supposed_x1, true_x1)) {
-                    printf("First root doesn't fit. True value: %lg. Received value: %lg\n", true_x1, supposed_x1);
-                }
-                if (!is_it_this_number(supposed_x2, true_x2)) {
-                    printf("Second root doesn't fit. True value: %lg. Received value: %lg\n", true_x2, supposed_x2);
-                }
-                break;
-            case 1:
 
-                if (!is_it_this_number(supposed_x1, true_x1)) {
-                    printf("Root doesn't fit. True value: %lg. Received value: %lg\n", true_x1, supposed_x1);
-                }
-                break;
-            }
-        printf("\n");
-}
+
+
+
+
+
+
+
+
+
+
