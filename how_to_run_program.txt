@@ -1,0 +1,2 @@
+g++ main.c tests.c funcs.c
+.\a.exe
