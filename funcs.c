@@ -44,7 +44,23 @@ double abs(double n) {
     return n;
 }
 
-// Решает квадратное уравнение в общем случае
+
+
+//‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐
+//! Solves a square equation ax2 + bx + c = 0
+//!
+//!
+//! @param [in]  a   a‐coefficient
+//! @param [in]  b   b‐coefficient
+//! @param [in]  c   c‐coefficient
+//! @param [out] x1  Pointer to the 1st root
+//! @param [out] x2  Pointer to the 2nd root
+//!
+//! @return Number of roots
+//!
+//! @note   In case of infinite number of roots,
+//!         returns INFINITE_ROOTS.
+//‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐
 int general_case_solve(double a, double b, double c, double* x1, double* x2) {
     
     assert(isfinite(a));
@@ -65,7 +81,21 @@ int general_case_solve(double a, double b, double c, double* x1, double* x2) {
 
 }
 
-// Решает линейное уравнение вида bx + c = 0
+
+//‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐
+//! Solves a square equation bx + c = 0
+//!
+//!
+//! @param [in]  b   b‐coefficient
+//! @param [in]  c   c‐coefficient
+//! @param [out] x1  Pointer to the 1st root
+//! @param [out] x2  Pointer to the 2nd root
+//!
+//! @return Number of roots
+//!
+//! @note   In case of infinite number of roots,
+//!         returns SS_INF_ROOTS.
+//‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐
 int linear_equation_solve(double b, double c, double* x1, double* x2) {
 
     assert(isfinite(b));
@@ -73,7 +103,7 @@ int linear_equation_solve(double b, double c, double* x1, double* x2) {
 
     assert(x1 != NULL);
     assert(x2 != NULL);
-    assert(x1 != x2); 
+    assert(x1 != x2);
 
     if (!is_it_this_number(b, 0)) { // Если b != 0
             *x1 = -c / b;
@@ -83,12 +113,28 @@ int linear_equation_solve(double b, double c, double* x1, double* x2) {
             if (!is_it_this_number(c, 0)) { // Если с != 0
                 return 0;
             } else { // Если c == 0
+                *x1 = NAN; *x2 = NAN;
                 return INFINITE_ROOTS; // Бесконечное количество корней
             }
         }
 }
 
-// Решает квадратное уравнение вида ax^2 + bx + c = 0
+
+//‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐
+//! Solves a square equation ax2 + bx + c = 0 when a != 0
+//!
+//!
+//! @param [in]  a   a‐coefficient
+//! @param [in]  b   b‐coefficient
+//! @param [in]  c   c‐coefficient
+//! @param [out] x1  Pointer to the 1st root
+//! @param [out] x2  Pointer to the 2nd root
+//!
+//! @return Number of roots
+//!
+//! @note   In case of infinite number of roots,
+//!         returns INFINITE_ROOTS.
+//‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐
 int quadratic_equation_solve(double a, double b, double c, double* x1, double* x2) {
 
     assert(isfinite(a));
@@ -110,11 +156,21 @@ int quadratic_equation_solve(double a, double b, double c, double* x1, double* x
         *x1 = *x2 = -b / (2*a);
         return 1;
     } else {
+        *x1 = NAN; *x2 = NAN;
         return 0;
     }
 }
 
-// Сортирует два корня по возрастанию. Первый становится меньше второго
+
+//‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐
+//! Sorts two roots in ascending order. The first becomes smaller than the second.
+//!
+//!
+//! @param [out] x1  Pointer to the 1st root
+//! @param [out] x2  Pointer to the 2nd root
+//!
+//! @return have the roots been sorted
+//‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐
 bool sort_roots_rising(double* x1, double* x2) {
     if (*x2 == NAN) { // *
         return false;

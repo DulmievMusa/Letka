@@ -5,10 +5,11 @@
 #include "funcs.h"
 #include "tests.h"
 
-/*struct test {
+struct test {
     double a,b,c;
     int n;
-};*/
+    double x1, x2;
+};
 
 int run_tests() {
     test_general_solve();
@@ -17,19 +18,18 @@ int run_tests() {
 
 
 bool test_general_solve() {
-    // struct test var = {0,0,0};
-    // var.a = 4;
 
     double supposed_x1 = 0, supposed_x2 = 0, a = 0, b = 0, c = 0, check_result = 0;
     int supposed_count_of_roots = 0, count = 1;
-    double tests[][6] = {{1, -8, -9, 2, -1, 9}, {0, 0, 0, -1, 0, 0}, {9, 1, 10, 0, 0, 0},
+    struct test tests[] = {{1, -8, -9, 2, -1, 9}, {0, 0, 0, -1, 0, 0}, {9, 1, 10, 0, 0, 0},
                          {1, -8, -9, 1, 0, 0}, {0, 0, 0, 0, 0, 0}, {9, 1, 10, 1, 0, 0}};
     const int count_of_tests = sizeof(tests) / sizeof(tests[0]); 
 
     for (int i=0; i < count_of_tests; i++) {
-        a = tests[i][0]; b = tests[i][1]; c = tests[i][2];
-        int true_count_of_roots = tests[i][3];
-        double true_x1 = tests[i][4], true_x2 = tests[i][5];
+        
+        a = tests[i].a; b = tests[i].b; c = tests[i].c;
+        int true_count_of_roots = tests[i].n;
+        double true_x1 = tests[i].x1, true_x2 = tests[i].x2;
         supposed_count_of_roots = general_case_solve(a, b, c, &supposed_x1, &supposed_x2);
 
         if (supposed_count_of_roots != true_count_of_roots) { // Если количество корней найдено неверно
