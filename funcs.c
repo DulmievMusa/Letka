@@ -5,14 +5,17 @@
 #include <assert.h>
 #include <stdlib.h>
 #include "funcs.h"
+#define MyAssert(result) AssertOfMusa(result, __FILE__, __PRETTY_FUNCTION__, __LINE__)
+#define FG_BG_ANSI "\033[41;97m"
+#define RESET_ANSI "\033[0m"
 
-const double ACCURACY = 1e-4;
+const double ACCURACY = 1e-6;
 const int INFINITE_ROOTS = -1;
 
 // ANSI escape sequences
 // C predefined macros
 // __pretty_function__
-// реализовать свой assert
+// реализовать свой MyAssert
 
 // NDEBUG - значит что дебага НЕТ
 
@@ -24,9 +27,9 @@ const int INFINITE_ROOTS = -1;
 //! @return Calculated discriminant
 //‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐
 double CalculateDiscriminant(double a, double b, double c) {
-    assert(isfinite(a));
-    assert(isfinite(b));
-    assert(isfinite(c));
+    MyAssert(isfinite(a));
+    MyAssert(isfinite(b));
+    MyAssert(isfinite(c));
 
     return b*b - 4*a*c;
 }
@@ -41,8 +44,8 @@ double CalculateDiscriminant(double a, double b, double c) {
 //‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐
 bool IsItThisNumber(double first, double second) {
 
-    assert(isfinite(first));
-    assert(isfinite(second));
+    MyAssert(isfinite(first));
+    MyAssert(isfinite(second));
 
     if (first * second < 0) {
         return false;
@@ -63,7 +66,7 @@ bool IsItThisNumber(double first, double second) {
 //‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐
 double Abs(double n) {
 
-    assert(isfinite(n));
+    MyAssert(isfinite(n));
 
     if (n < 0) {
         n = -n;
@@ -90,13 +93,13 @@ double Abs(double n) {
 //‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐
 int GeneralCaseSolve(double a, double b, double c, double* x1, double* x2) {
     
-    assert(isfinite(a));
-    assert(isfinite(b));
-    assert(isfinite(c));
+    MyAssert(isfinite(a));
+    MyAssert(isfinite(b));
+    MyAssert(isfinite(c));
 
-    assert(x1 != NULL);
-    assert(x2 != NULL);
-    assert(x1 != x2);
+    MyAssert(x1 != NULL);
+    MyAssert(x2 != NULL);
+    MyAssert(x1 != x2);
     *x1 = 0; // Удалить, если всё сломалось
     *x2 = 0; // Удалить, если всё сломалось 
 
@@ -125,16 +128,16 @@ int GeneralCaseSolve(double a, double b, double c, double* x1, double* x2) {
 //‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐
 int LinearEquationSolve(double b, double c, double* x1, double* x2) {
 
-    assert(isfinite(b));
-    assert(isfinite(c));
+    MyAssert(isfinite(b));
+    MyAssert(isfinite(c));
 
-    assert(x1 != NULL);
-    assert(x2 != NULL);
-    assert(x1 != x2);
+    MyAssert(x1 != NULL);
+    MyAssert(x2 != NULL);
+    MyAssert(x1 != x2);
 
     if (!IsItThisNumber(b, 0)) { // Если b != 0
             *x1 = Abs(-c / b);
-            *x2 = NAN;
+            *x2 = NAN; // HERE
             return 1;
         } else { // Если b == 0
             if (!IsItThisNumber(c, 0)) { // Если с != 0
@@ -163,13 +166,13 @@ int LinearEquationSolve(double b, double c, double* x1, double* x2) {
 //‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐
 int QuadraticEquationSolve(double a, double b, double c, double* x1, double* x2) {
 
-    assert(isfinite(a));
-    assert(isfinite(b));
-    assert(isfinite(c));
+    MyAssert(isfinite(a));
+    MyAssert(isfinite(b));
+    MyAssert(isfinite(c));
 
-    assert(x1 != NULL);
-    assert(x2 != NULL);
-    assert(x1 != x2); 
+    MyAssert(x1 != NULL);
+    MyAssert(x2 != NULL);
+    MyAssert(x1 != x2); 
 
     double dis = 0;
     dis = CalculateDiscriminant(a, b, c);
@@ -212,10 +215,13 @@ bool SortRootsRising(double* x1, double* x2) {
 }
 
 
-int MyAssert(int result) {
-    if (result) {
-        printf("\033[41;97mAssertion failed: file: %s, line %d\033[0m\n", __FILE__, __LINE__);
-        return 1;
+int AssertOfMusa(int result, const char *file, const char *function, int line) {
+    if (!result) {
+        printf(FG_BG_ANSI"Assertion failed: " RESET_ANSI "\n");
+        printf(FG_BG_ANSI"File: %s " RESET_ANSI "\n", file);
+        printf(FG_BG_ANSI"\033[41;97mFunction: %s " RESET_ANSI "\n", function);
+        printf(FG_BG_ANSI"Line: %d " RESET_ANSI "\n", line);
+        printf("\n");
     }
     return 0;
 }

@@ -6,6 +6,7 @@
 #include <stdlib.h>
 #include "tests.h"
 #include "funcs.h"
+#define MyAssert(result) AssertOfMusa(result, __FILE__, __PRETTY_FUNCTION__, __LINE__)
 
 
 const double ACCURACY = 1e-4;
@@ -18,6 +19,7 @@ int PrintRoots(int n, double x1, double x2);
 
 int main() {
     RunTests();
+    
     double a = 0, b = 0, c = 0, x1 = 0, x2 = 0;
     int n = 0, flag = 0;
     printf("This program solve quad. equation ax^2+bx+c=0\n");
@@ -44,11 +46,11 @@ int main() {
 //‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐
 int InputCoefficients(double* a, double* b, double* c) {
     
-    assert(a != NULL);
-    assert(b != NULL);
-    assert(c != NULL);
+    MyAssert(a != NULL);
+    MyAssert(b != NULL);
+    MyAssert(c != NULL);
 
-    assert(a != b && b != c && a != c);
+    MyAssert(a != b && b != c && a != c);
 
     printf("a: ");
     CorrectInputNumber(a, 'a');
@@ -67,7 +69,7 @@ int InputCoefficients(double* a, double* b, double* c) {
 //‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐
 int CorrectInputNumber(double* a, char symbol) {
 
-    assert(a != NULL);
+    MyAssert(a != NULL);
 
     int ch;
     while (scanf("%lg", a) == 0) { // NOTE: scanf("%lg%c", a, symbol)... symbol == '\n'?
@@ -94,11 +96,11 @@ int CorrectInputNumber(double* a, char symbol) {
 //‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐
 int PrintRoots(int n, double x1, double x2) {
     
-    assert(isfinite(x1));
-    assert(isfinite(x2));
+    MyAssert(isfinite(x1));
 
     switch (n) {
-        case 2: 
+        case 2:
+            MyAssert(isfinite(x2));
             printf("Equation have two roots:\nx1=%g\nx2=%g", x1, x2);
             break;
         case 1:
