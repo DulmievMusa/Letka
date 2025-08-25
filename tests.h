@@ -9,5 +9,6 @@ int CorrectNumberOfRootsPrint(int supposed_count_of_roots,
                                     int count);
 int IncorrectNumberOfRootsPrint(int true_count, int false_count, int number_of_test);
 bool TestGeneralSolve();
+int OneTestQuadEq(struct TestData test, int count);
 
 #endif
