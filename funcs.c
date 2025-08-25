@@ -1,14 +1,29 @@
 #include <stdio.h>
 #include <math.h>
 #include <stdbool.h>
+#define NDEBUG
 #include <assert.h>
+#include <stdlib.h>
 #include "funcs.h"
 
 const double ACCURACY = 1e-4;
 const int INFINITE_ROOTS = -1;
 
-// Считает дискриминант
-double calculate_discriminant(double a, double b, double c) {
+// ANSI escape sequences
+// C predefined macros
+// __pretty_function__
+// реализовать свой assert
+
+// NDEBUG - значит что дебага НЕТ
+
+//‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐
+//! Calculate discriminant
+//!
+//! @param [in] n number
+//!
+//! @return Calculated discriminant
+//‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐
+double CalculateDiscriminant(double a, double b, double c) {
     assert(isfinite(a));
     assert(isfinite(b));
     assert(isfinite(c));
@@ -16,8 +31,15 @@ double calculate_discriminant(double a, double b, double c) {
     return b*b - 4*a*c;
 }
 
-// Проверяет совпадает ли первое число со вторым
-bool is_it_this_number(double first, double second) {
+//‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐
+//! Checks whether two numbers are the same, taking into account the calculation error
+//!
+//! @param [in]  first first number
+//! @param [in]  second second number
+//!
+//! @return if two numbers match true, else false
+//‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐
+bool IsItThisNumber(double first, double second) {
 
     assert(isfinite(first));
     assert(isfinite(second));
@@ -25,7 +47,7 @@ bool is_it_this_number(double first, double second) {
     if (first * second < 0) {
         return false;
     }
-    double diff = abs(first - second);
+    double diff = Abs(first - second);
     if (diff >= ACCURACY) {
         return false;
     } else {
@@ -33,8 +55,13 @@ bool is_it_this_number(double first, double second) {
     }
 }
 
-// Модуль числа
-double abs(double n) {
+//‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐
+//! Returns the modulus of a number
+//!
+//! @param [in]  n number
+//!
+//‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐
+double Abs(double n) {
 
     assert(isfinite(n));
 
@@ -61,7 +88,7 @@ double abs(double n) {
 //! @note   In case of infinite number of roots,
 //!         returns INFINITE_ROOTS.
 //‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐
-int general_case_solve(double a, double b, double c, double* x1, double* x2) {
+int GeneralCaseSolve(double a, double b, double c, double* x1, double* x2) {
     
     assert(isfinite(a));
     assert(isfinite(b));
@@ -73,10 +100,10 @@ int general_case_solve(double a, double b, double c, double* x1, double* x2) {
     *x1 = 0; // Удалить, если всё сломалось
     *x2 = 0; // Удалить, если всё сломалось 
 
-    if (is_it_this_number(a, 0)) { //Если a == 0
-        return linear_equation_solve(b, c, x1, x2);
+    if (IsItThisNumber(a, 0)) { //Если a == 0
+        return LinearEquationSolve(b, c, x1, x2);
     } else { // Если a != 0
-        return quadratic_equation_solve(a, b, c, x1, x2);
+        return QuadraticEquationSolve(a, b, c, x1, x2);
     } 
 
 }
@@ -96,7 +123,7 @@ int general_case_solve(double a, double b, double c, double* x1, double* x2) {
 //! @note   In case of infinite number of roots,
 //!         returns SS_INF_ROOTS.
 //‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐
-int linear_equation_solve(double b, double c, double* x1, double* x2) {
+int LinearEquationSolve(double b, double c, double* x1, double* x2) {
 
     assert(isfinite(b));
     assert(isfinite(c));
@@ -105,15 +132,14 @@ int linear_equation_solve(double b, double c, double* x1, double* x2) {
     assert(x2 != NULL);
     assert(x1 != x2);
 
-    if (!is_it_this_number(b, 0)) { // Если b != 0
-            *x1 = -c / b;
+    if (!IsItThisNumber(b, 0)) { // Если b != 0
+            *x1 = Abs(-c / b);
             *x2 = NAN;
             return 1;
         } else { // Если b == 0
-            if (!is_it_this_number(c, 0)) { // Если с != 0
+            if (!IsItThisNumber(c, 0)) { // Если с != 0
                 return 0;
             } else { // Если c == 0
-                *x1 = NAN; *x2 = NAN;
                 return INFINITE_ROOTS; // Бесконечное количество корней
             }
         }
@@ -135,7 +161,7 @@ int linear_equation_solve(double b, double c, double* x1, double* x2) {
 //! @note   In case of infinite number of roots,
 //!         returns INFINITE_ROOTS.
 //‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐
-int quadratic_equation_solve(double a, double b, double c, double* x1, double* x2) {
+int QuadraticEquationSolve(double a, double b, double c, double* x1, double* x2) {
 
     assert(isfinite(a));
     assert(isfinite(b));
@@ -146,17 +172,16 @@ int quadratic_equation_solve(double a, double b, double c, double* x1, double* x
     assert(x1 != x2); 
 
     double dis = 0;
-    dis = calculate_discriminant(a, b, c);
+    dis = CalculateDiscriminant(a, b, c);
     if (dis > 0) {
         double sqrt_dis = sqrt(dis);
         *x1 = (-b + sqrt_dis) / (2*a);
         *x2 = (-b - sqrt_dis) / (2*a);
         return 2;
-    } else if (is_it_this_number(dis, 0)) {
+    } else if (IsItThisNumber(dis, 0)) {
         *x1 = *x2 = -b / (2*a);
         return 1;
     } else {
-        *x1 = NAN; *x2 = NAN;
         return 0;
     }
 }
@@ -169,9 +194,9 @@ int quadratic_equation_solve(double a, double b, double c, double* x1, double* x
 //! @param [out] x1  Pointer to the 1st root
 //! @param [out] x2  Pointer to the 2nd root
 //!
-//! @return have the roots been sorted
+//! @return have the roots been sorted (true or false)
 //‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐
-bool sort_roots_rising(double* x1, double* x2) {
+bool SortRootsRising(double* x1, double* x2) {
     if (*x2 == NAN) { // *
         return false;
     }
@@ -184,4 +209,13 @@ bool sort_roots_rising(double* x1, double* x2) {
     } else {
         return false;
     }
+}
+
+
+int MyAssert(int result) {
+    if (result) {
+        printf("\033[41;97mAssertion failed: file: %s, line %d\033[0m\n", __FILE__, __LINE__);
+        return 1;
+    }
+    return 0;
 }

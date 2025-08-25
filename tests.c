@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <math.h>
 #include <stdbool.h>
+#define NDEBUG
 #include <assert.h>
 #include "funcs.h"
 #include "tests.h"
@@ -11,13 +12,14 @@ struct test {
     double x1, x2;
 };
 
-int run_tests() {
-    test_general_solve();
+
+int RunTests() {
+    TestGeneralSolve();
     return 1;
 }
 
 
-bool test_general_solve() {
+bool TestGeneralSolve() {
 
     double supposed_x1 = 0, supposed_x2 = 0, a = 0, b = 0, c = 0, check_result = 0;
     int supposed_count_of_roots = 0, count = 1;
@@ -30,15 +32,15 @@ bool test_general_solve() {
         a = tests[i].a; b = tests[i].b; c = tests[i].c;
         int true_count_of_roots = tests[i].n;
         double true_x1 = tests[i].x1, true_x2 = tests[i].x2;
-        supposed_count_of_roots = general_case_solve(a, b, c, &supposed_x1, &supposed_x2);
+        supposed_count_of_roots = GeneralCaseSolve(a, b, c, &supposed_x1, &supposed_x2);
 
         if (supposed_count_of_roots != true_count_of_roots) { // Если количество корней найдено неверно
             printf("Test number %d faled\n", count);
             printf("coefficients: a=%lg , b=%lg, c=%lg\n", a, b, c);
-            incorrect_number_of_roots_print(true_count_of_roots, supposed_count_of_roots, count);
+            IncorrectNumberOfRootsPrint(true_count_of_roots, supposed_count_of_roots, count);
         } else { // Если количество корней найдено верно
-            if (!is_it_this_number(true_count_of_roots, 0) && !is_it_this_number(true_count_of_roots, -1)){
-                correct_number_of_roots_print(supposed_count_of_roots,
+            if (!IsItThisNumber(true_count_of_roots, 0) && !IsItThisNumber(true_count_of_roots, -1)){
+                CorrectNumberOfRootsPrint(supposed_count_of_roots,
                                              a, b, c, supposed_x1, supposed_x2,
                                             true_x1, true_x2, count);
             }
@@ -53,7 +55,7 @@ bool test_general_solve() {
 }
 
 
-int incorrect_number_of_roots_print(int true_count, int false_count, int number_of_test) {
+int IncorrectNumberOfRootsPrint(int true_count, int false_count, int number_of_test) {
     if (false_count == 2 || false_count == 1) {
         printf("Program thinks that equation have %d roots\n", false_count);
     } else if (false_count == 0) {
@@ -76,15 +78,15 @@ int incorrect_number_of_roots_print(int true_count, int false_count, int number_
     printf("\n");
 }
 
-int correct_number_of_roots_print(int supposed_count_of_roots,
+int CorrectNumberOfRootsPrint(int supposed_count_of_roots,
                                     double a, double b, double c,
                                     double supposed_x1, double supposed_x2,
                                     double true_x1, double true_x2,
                                     int count) {
     
-    sort_roots_rising(&supposed_x1, &supposed_x2);
-    sort_roots_rising(&true_x1, &true_x2);
-    if (!is_it_this_number(supposed_x1, true_x1) || !is_it_this_number(supposed_x2, true_x2)) {
+    SortRootsRising(&supposed_x1, &supposed_x2);
+    SortRootsRising(&true_x1, &true_x2);
+    if (!IsItThisNumber(supposed_x1, true_x1) || !IsItThisNumber(supposed_x2, true_x2)) {
                     printf("Test number %d faled\n", count);
                     printf("Coefficients: a=%lg , b=%lg, c=%lg\n", a, b, c);
                     printf("Program found %d root(s)\n", supposed_count_of_roots);
@@ -94,16 +96,16 @@ int correct_number_of_roots_print(int supposed_count_of_roots,
             {
             case 2:
                 
-                if (!is_it_this_number(supposed_x1, true_x1)) {
+                if (!IsItThisNumber(supposed_x1, true_x1)) {
                     printf("First root doesn't fit. True value: %lg. Received value: %lg\n", true_x1, supposed_x1);
                 }
-                if (!is_it_this_number(supposed_x2, true_x2)) {
+                if (!IsItThisNumber(supposed_x2, true_x2)) {
                     printf("Second root doesn't fit. True value: %lg. Received value: %lg\n", true_x2, supposed_x2);
                 }
                 break;
             case 1:
 
-                if (!is_it_this_number(supposed_x1, true_x1)) {
+                if (!IsItThisNumber(supposed_x1, true_x1)) {
                     printf("Root doesn't fit. True value: %lg. Received value: %lg\n", true_x1, supposed_x1);
                 }
                 break;

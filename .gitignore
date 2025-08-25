@@ -3,3 +3,5 @@ test_file.c
 tesst.c
 html
 latex
+trash.c
+Makefile
