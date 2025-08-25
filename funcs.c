@@ -222,6 +222,7 @@ int AssertOfMusa(int result, const char *file, const char *function, int line) {
         printf(FG_BG_ANSI"\033[41;97mFunction: %s " RESET_ANSI "\n", function);
         printf(FG_BG_ANSI"Line: %d " RESET_ANSI "\n", line);
         printf("\n");
+        abort();
     }
     return 0;
 }
