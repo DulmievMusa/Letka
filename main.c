@@ -16,12 +16,11 @@ int CorrectInputNumber(double* a, char symbol);
 int InputCoefficients(double* a, double* b, double* c);
 int PrintRoots(int n, double x1, double x2);
 
-
+// TODO: separate tests into separate file with separate main
 int main() {
     RunTests();
-    
     double a = 0, b = 0, c = 0, x1 = 0, x2 = 0;
-    int n = 0, flag = 0;
+    int n = 0, flag = 0; // TODO: flag is unused
     printf("This program solve quad. equation ax^2+bx+c=0\n");
     printf("Input coefficient a, coefficient b, coefficient c in different lines:\n");
     
@@ -29,12 +28,14 @@ int main() {
 
     printf("You have entered: a: %lg, b: %lg c: %lg\n", a, b, c);
 
-    n = GeneralCaseSolve(a, b, c, &x1, &x2); // Решение уравнения
+    n = GeneralCaseSolve(a, b, c, &x1, &x2); // Решение уравнения // TODO: bring declarations closer to uses, in this case it's better to declare it right here
     
     PrintRoots(n, x1, x2);
 
     return 0;
 }
+
+// TODO: Docs are usually written in imperative
 
 //‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐
 //! Enters values ​​from the keyboard into variables a, b, c
@@ -46,11 +47,17 @@ int main() {
 //‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐
 int InputCoefficients(double* a, double* b, double* c) {
     
-    MyAssert(a != NULL);
-    MyAssert(b != NULL);
-    MyAssert(c != NULL);
+    // MyAssert(a != NULL);
+    // MyAssert(b != NULL);
+    // MyAssert(c != NULL);
 
-    MyAssert(a != b && b != c && a != c);
+    // MyAssert(a != b && b != c && a != c);
+
+    // char array_of_symbols[] = {'a', 'b', 'c'};
+    // double* array_of_variables[] = {&a, &b, &c};
+    // for (int i = 0; i < 3; i++) {
+        
+    // }
 
     printf("a: ");
     CorrectInputNumber(a, 'a');
@@ -62,21 +69,21 @@ int InputCoefficients(double* a, double* b, double* c) {
 }
 
 //‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐
-//! Enters value ​​from the keyboard into variables and asks again if the user entered something other than a number
+//! Enters value ​​from a keyboard into variables and asks again if user entered something other than a number
 //!
 //! @param [out] a  one coefficient
 //!
 //‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐
-int CorrectInputNumber(double* a, char symbol) {
+int CorrectInputNumber(double* a, char symbol) { // TODO: better name? InputNumberEnsuringCorrectness (or just InputNumber)
 
     MyAssert(a != NULL);
 
-    int ch;
-    while (scanf("%lg", a) == 0) { // NOTE: scanf("%lg%c", a, symbol)... symbol == '\n'?
+    int ch; // TODO: uninitialized variable (e.g. = '\0')
+    while (scanf("%lg", a) == 0 /* || has_garbage_in_line() */) { // NOTE: scanf("%lg%c", a, symbol)... symbol == '\n'?
         printf("You entered not a number. Try again\n");
         printf("%c: ", symbol);
         ch = getchar();
-        while (ch != '\n' && ch != EOF)
+        while (ch != '\n' && ch != EOF) // TODO: extract this to a function, skip_line?
             ch = getchar();
     }
     ch = getchar();
@@ -98,19 +105,26 @@ int PrintRoots(int n, double x1, double x2) {
     
     MyAssert(isfinite(x1));
 
+    // TODO: One possibility is something like this:
+
+    // double roots[] = {x1, x2};
+    // printf("Equation has %d roots: \n", n);
+    // for (int i = 0; i < n; ++ i)
+    //     printf("- %lf\n", roots[i]);
+
     switch (n) {
         case 2:
             MyAssert(isfinite(x2));
-            printf("Equation have two roots:\nx1=%g\nx2=%g", x1, x2);
+            printf("Equation has two roots:\nx1=%g\nx2=%g", x1, x2);
             break;
         case 1:
-            printf("Equation have one root:\nx=%g", x1);
+            printf("Equation has one root:\nx=%g", x1);
             break;
         case 0:
-            printf("Equation have no roots");
+            printf("Equation has no roots");
             break;
         case -1:
-            printf("Equation have infinite roots");
+            printf("Equation has infinite roots"); // TODO: every number is a root - it's a stronger statement than "infinite roots"
             break;
     }
 }

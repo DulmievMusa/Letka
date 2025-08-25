@@ -1,10 +1,14 @@
+// TODO: funcs.c is also not a good name
+
 #include <stdio.h>
 #include <math.h>
 #include <stdbool.h>
-#define NDEBUG
+#define NDEBUG // TODO: Why?
 #include <assert.h>
 #include <stdlib.h>
 #include "funcs.h"
+
+// TODO: separate assert to other file
 #define MyAssert(result) AssertOfMusa(result, __FILE__, __PRETTY_FUNCTION__, __LINE__)
 #define FG_BG_ANSI "\033[41;97m"
 #define RESET_ANSI "\033[0m"
@@ -20,7 +24,7 @@ const int INFINITE_ROOTS = -1;
 // NDEBUG - значит что дебага НЕТ
 
 //‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐
-//! Calculate discriminant
+//! Calculate discriminant // TODO: add more info, e.g. what values coefficients can have? Also, move docs to header file
 //!
 //! @param [in] n number
 //!
@@ -51,7 +55,7 @@ bool IsItThisNumber(double first, double second) {
         return false;
     }
     double diff = Abs(first - second);
-    if (diff >= ACCURACY) {
+    if (diff >= ACCURACY) { // TODO: return diff < ACCURACY?
         return false;
     } else {
         return true;
@@ -78,6 +82,10 @@ double Abs(double n) {
 
 //‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐
 //! Solves a square equation ax2 + bx + c = 0
+// TODO: more info, e.g.
+// How it solves it? Analytically? Or with Newton's method? Or some other way?
+// Is it fast?
+// Does it require coefficients to have certain values? E.g. what happens if a is NAN or INF?
 //!
 //!
 //! @param [in]  a   a‐coefficient
@@ -136,7 +144,7 @@ int LinearEquationSolve(double b, double c, double* x1, double* x2) {
     MyAssert(x1 != x2);
 
     if (!IsItThisNumber(b, 0)) { // Если b != 0
-            *x1 = Abs(-c / b);
+            *x1 = Abs(-c / b); // TODO: indentation
             *x2 = NAN; // HERE
             return 1;
         } else { // Если b == 0
@@ -174,7 +182,7 @@ int QuadraticEquationSolve(double a, double b, double c, double* x1, double* x2)
     MyAssert(x2 != NULL);
     MyAssert(x1 != x2); 
 
-    double dis = 0;
+    double dis = 0; // TODO: better name?
     dis = CalculateDiscriminant(a, b, c);
     if (dis > 0) {
         double sqrt_dis = sqrt(dis);
@@ -208,7 +216,7 @@ bool SortRootsRising(double* x1, double* x2) {
         buffer = *x2;
         *x2 = *x1;
         *x1 = buffer;
-        return true;
+        return true; // TODO: do you ever use this return value?
     } else {
         return false;
     }
@@ -219,7 +227,7 @@ int AssertOfMusa(int result, const char *file, const char *function, int line) {
     if (!result) {
         printf(FG_BG_ANSI"Assertion failed: " RESET_ANSI "\n");
         printf(FG_BG_ANSI"File: %s " RESET_ANSI "\n", file);
-        printf(FG_BG_ANSI"\033[41;97mFunction: %s " RESET_ANSI "\n", function);
+        printf(FG_BG_ANSI"\033[41;97mFunction: %s " RESET_ANSI "\n", function); // TODO: \033[41;97m should be a variable, also add more spaces
         printf(FG_BG_ANSI"Line: %d " RESET_ANSI "\n", line);
         printf("\n");
         abort();
