@@ -3,7 +3,6 @@
 #include <stdio.h>
 #include <math.h>
 #include <stdbool.h>
-#define NDEBUG // TODO: Why?
 #include <assert.h>
 #include <stdlib.h>
 #include "funcs.h"
@@ -55,12 +54,9 @@ bool IsItThisNumber(double first, double second) {
         return false;
     }
     double diff = Abs(first - second);
-    if (diff >= ACCURACY) { // TODO: return diff < ACCURACY?
-        return false;
-    } else {
-        return true;
-    }
+    return diff < ACCURACY;
 }
+
 
 //‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐
 //! Returns the modulus of a number
@@ -144,16 +140,17 @@ int LinearEquationSolve(double b, double c, double* x1, double* x2) {
     MyAssert(x1 != x2);
 
     if (!IsItThisNumber(b, 0)) { // Если b != 0
-            *x1 = Abs(-c / b); // TODO: indentation
-            *x2 = NAN; // HERE
-            return 1;
-        } else { // Если b == 0
-            if (!IsItThisNumber(c, 0)) { // Если с != 0
-                return 0;
-            } else { // Если c == 0
-                return INFINITE_ROOTS; // Бесконечное количество корней
-            }
+        *x1 = Abs(-c / b); // TODO: indentation
+        *x2 = NAN; // HERE
+        return 1;
+    } 
+    else { // Если b == 0
+        if (!IsItThisNumber(c, 0)) { // Если с != 0
+            return 0;
+        } else { // Если c == 0
+            return INFINITE_ROOTS; // Бесконечное количество корней
         }
+    }
 }
 
 
@@ -182,14 +179,14 @@ int QuadraticEquationSolve(double a, double b, double c, double* x1, double* x2)
     MyAssert(x2 != NULL);
     MyAssert(x1 != x2); 
 
-    double dis = 0; // TODO: better name?
-    dis = CalculateDiscriminant(a, b, c);
-    if (dis > 0) {
-        double sqrt_dis = sqrt(dis);
+    double discriminant = CalculateDiscriminant(a, b, c);
+    
+    if (discriminant > 0) {
+        double sqrt_dis = sqrt(discriminant);
         *x1 = (-b + sqrt_dis) / (2*a);
         *x2 = (-b - sqrt_dis) / (2*a);
         return 2;
-    } else if (IsItThisNumber(dis, 0)) {
+    } else if (IsItThisNumber(discriminant, 0)) {
         *x1 = *x2 = -b / (2*a);
         return 1;
     } else {
@@ -225,12 +222,18 @@ bool SortRootsRising(double* x1, double* x2) {
 
 int AssertOfMusa(int result, const char *file, const char *function, int line) {
     if (!result) {
-        printf(FG_BG_ANSI"Assertion failed: " RESET_ANSI "\n");
-        printf(FG_BG_ANSI"File: %s " RESET_ANSI "\n", file);
-        printf(FG_BG_ANSI"\033[41;97mFunction: %s " RESET_ANSI "\n", function); // TODO: \033[41;97m should be a variable, also add more spaces
-        printf(FG_BG_ANSI"Line: %d " RESET_ANSI "\n", line);
+        printf(FG_BG_ANSI "Assertion failed: " RESET_ANSI "\n");
+        printf(FG_BG_ANSI "File: %s " RESET_ANSI "\n", file);
+        printf(FG_BG_ANSI "Function: %s " RESET_ANSI "\n", function); // TODO: \033[41;97m should be a variable, also add more spaces
+        printf(FG_BG_ANSI "Line: %d " RESET_ANSI "\n", line);
         printf("\n");
         abort();
     }
     return 0;
+}
+
+int ClearBuffer() {
+    char ch = getchar();
+    while (ch != '\n' && ch != EOF){ // TODO: extract this to a function, skip_line?
+        ch = getchar();}
 }

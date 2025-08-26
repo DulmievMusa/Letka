@@ -1,7 +1,6 @@
 #include <stdio.h>
 #include <math.h>
 #include <stdbool.h>
-#define NDEBUG
 #include <assert.h>
 #include <stdlib.h>
 #include "tests.h"
@@ -20,7 +19,7 @@ int PrintRoots(int n, double x1, double x2);
 int main() {
     RunTests();
     double a = 0, b = 0, c = 0, x1 = 0, x2 = 0;
-    int n = 0, flag = 0; // TODO: flag is unused
+    int n = 0;
     printf("This program solve quad. equation ax^2+bx+c=0\n");
     printf("Input coefficient a, coefficient b, coefficient c in different lines:\n");
     
@@ -47,24 +46,17 @@ int main() {
 //‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐
 int InputCoefficients(double* a, double* b, double* c) {
     
-    // MyAssert(a != NULL);
-    // MyAssert(b != NULL);
-    // MyAssert(c != NULL);
+    MyAssert(a != NULL);
+    MyAssert(b != NULL);
+    MyAssert(c != NULL);
+    MyAssert(a != b && b != c && a != c);
 
-    // MyAssert(a != b && b != c && a != c);
-
-    // char array_of_symbols[] = {'a', 'b', 'c'};
-    // double* array_of_variables[] = {&a, &b, &c};
-    // for (int i = 0; i < 3; i++) {
-        
-    // }
-
-    printf("a: ");
-    CorrectInputNumber(a, 'a');
-    printf("b: ");
-    CorrectInputNumber(b, 'b');
-    printf("c: ");
-    CorrectInputNumber(c, 'c');
+    char array_of_symbols[] = {'a', 'b', 'c'};
+    double* array_of_variables[] = {a, b, c};
+    for (int i = 0; i < 3; i++) {
+        printf("%c: ", array_of_symbols[i]);
+        CorrectInputNumber(array_of_variables[i], array_of_symbols[i]);        
+    }
     return 0;
 }
 
@@ -77,18 +69,13 @@ int InputCoefficients(double* a, double* b, double* c) {
 int CorrectInputNumber(double* a, char symbol) { // TODO: better name? InputNumberEnsuringCorrectness (or just InputNumber)
 
     MyAssert(a != NULL);
-
-    int ch; // TODO: uninitialized variable (e.g. = '\0')
-    while (scanf("%lg", a) == 0 /* || has_garbage_in_line() */) { // NOTE: scanf("%lg%c", a, symbol)... symbol == '\n'?
+    int flag = scanf("%lg", a);
+    while (flag == 0 || (flag == 1 && (getchar() != '\n'))) {
         printf("You entered not a number. Try again\n");
         printf("%c: ", symbol);
-        ch = getchar();
-        while (ch != '\n' && ch != EOF) // TODO: extract this to a function, skip_line?
-            ch = getchar();
-    }
-    ch = getchar();
-    if (ch != '\n' &&  ch != EOF) { // TODO: why do you require two newlines in a row?
-        CorrectInputNumber(a, symbol);
+        ClearBuffer();
+        flag = scanf("%lg", a);
+        
     }
     return 0;
 }
@@ -105,26 +92,14 @@ int PrintRoots(int n, double x1, double x2) {
     
     MyAssert(isfinite(x1));
 
-    // TODO: One possibility is something like this:
+    double roots[] = {x1, x2};
 
-    // double roots[] = {x1, x2};
-    // printf("Equation has %d roots: \n", n);
-    // for (int i = 0; i < n; ++ i)
-    //     printf("- %lf\n", roots[i]);
-
-    switch (n) {
-        case 2:
-            MyAssert(isfinite(x2));
-            printf("Equation has two roots:\nx1=%g\nx2=%g", x1, x2);
-            break;
-        case 1:
-            printf("Equation has one root:\nx=%g", x1);
-            break;
-        case 0:
-            printf("Equation has no roots");
-            break;
-        case -1:
-            printf("Equation has infinite roots"); // TODO: every number is a root - it's a stronger statement than "infinite roots"
-            break;
+    if (n > -1) {
+        printf("Equation has %d root(s): \n", n);
+        for (int i = 0; i < n; ++ i) {
+            printf("x%d = %lg\n", i + 1, roots[i]);
+        }
     }
+    else {
+        printf("Every number is a root");}
 }

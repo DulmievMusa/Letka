@@ -1,16 +1,27 @@
 #include <stdio.h>
 #include <math.h>
 #include <stdbool.h>
-#define NDEBUG // TODO: it's better to use this with an option, -DNDEBUG
+// #define NDEBUG // TODO: it's better to use this with an option, -DNDEBUG
 #include <assert.h>
 #include "funcs.h"
 #include "tests.h"
+
+#define FG_BG_ANSI "\033[41;97m"
+#define TEST_FALED_ANSI "\033[44;97m"
+#define RESET_ANSI "\033[0m"
 
 struct TestData {
     double a,b,c; // TODO: spaces
     int n;
     double x1, x2;
 };
+
+const struct TestData tests[] = {{.a=1, .b=-8, .c=-9, .n=2, .x1=-1, .x2=9},
+                                 {.a=0, .b=0, .c=0, .n=-1, .x1=0, .x2=0},
+                                 {.a=9, .b=1, .c=10, .n=0, .x1=0, .x2=0},
+                                 {.a=1, .b=-8, .c=-9, .n=1, .x1=0, .x2=0},
+                                 {.a=0, .b=0, .c=0, .n=-1, .x1=0, .x2=0},
+                                 {.a=1, .b=-8, .c=-9, .n=2, .x1=-1, .x2=-1}};
 
 
 int RunTests() {
@@ -21,21 +32,16 @@ int RunTests() {
 
 bool TestGeneralSolve() {
 
-    int count = 1; // TODO: is count always = i + 1?
-
     // TODO: extract this from function, make "static const TestData tests[] = ..." 
     // TODO: also try to align it better so that tests are readable by a human being
-    struct TestData tests[] = {{1, -8, -9, 2, -1, 9},{0, 0, 0, -1, 0, 0}, {9, 1, 10, 0, 0, 0},
-                         {1, -8, -9, 1, 0, 0}, {0, 0, 0, 0, 0, 0}, {9, 1, 10, 1, 0, 0}};
+    
 
     // NOTE: You can make a macro ARRAY_SIZE(array)
     const int count_of_tests = sizeof(tests) / sizeof(tests[0]); 
 
     for (int i=0; i < count_of_tests; i++) { // TODO: too little spacing after "="
         
-        OneTestQuadEq(tests[i], count);
-        
-        count++; // TODO: too much spacing between the lines
+        OneTestQuadEq(tests[i], i + 1);
         
     }
     
@@ -55,7 +61,6 @@ int IncorrectNumberOfRootsPrint(int true_count, int false_count, int number_of_t
         printf("Program thinks that equation have infinite roots\n");
     }
     // TODO: never use more than three newlines in a row
-    
 
     if (true_count == 2 || true_count == 1) {
         printf("But it must have %d roots\n", true_count);
@@ -74,7 +79,7 @@ int IncorrectNumberOfRootsPrint(int true_count, int false_count, int number_of_t
 
 // strncpy is a function to make STRing CoPY from string.h
 
-// // it's easy to implement such function yourself:
+// it's easy to implement such function yourself:
 // void my_strncpy(char *destination, int n, const char *source) {
 //     int i = 0;
 //     for (; i < (n - 1); ++ i)
@@ -102,9 +107,9 @@ int CorrectNumberOfRootsPrint(int supposed_count_of_roots,
     SortRootsRising(&supposed_x1, &supposed_x2); // NOTE: Ascending
     SortRootsRising(&true_x1, &true_x2); // NOTE: this could be an assert?
     if (!IsItThisNumber(supposed_x1, true_x1) || !IsItThisNumber(supposed_x2, true_x2)) {
-                    printf("Test number %d faled\n", count); // TODO: fix indentation
-                    printf("Coefficients: a=%lg , b=%lg, c=%lg\n", a, b, c);
-                    printf("Program found %d root(s)\n", supposed_count_of_roots);
+        printf(TEST_FALED_ANSI "Test number %d faled" RESET_ANSI "\n", count); // TODO: fix indentation
+        printf("Coefficients: a=%lg , b=%lg, c=%lg\n", a, b, c);
+        printf("Program found %d root(s)\n", supposed_count_of_roots);
                 }                                    
                 
     switch (supposed_count_of_roots)
@@ -138,7 +143,7 @@ int OneTestQuadEq(struct TestData test, int count) {
     supposed_count_of_roots = GeneralCaseSolve(test.a, test.b, test.c, &supposed_x1, &supposed_x2);
 
     if (supposed_count_of_roots != true_count_of_roots) { // Если количество корней найдено неверно
-        printf("Test number %d faled\n", count);
+        printf(TEST_FALED_ANSI "Test number %d faled" RESET_ANSI "\n" , count);
         printf("coefficients: a=%lg , b=%lg, c=%lg\n", test.a, test.b, test.c);
         IncorrectNumberOfRootsPrint(true_count_of_roots, supposed_count_of_roots, count);
     } else { // Если количество корней найдено верно
