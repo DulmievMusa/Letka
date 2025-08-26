@@ -5,7 +5,8 @@
 #include <stdlib.h>
 #include "tests.h"
 #include "funcs.h"
-#define MyAssert(result) AssertOfMusa(result, __FILE__, __PRETTY_FUNCTION__, __LINE__)
+#include "macros.h"
+
 
 
 const double ACCURACY = 1e-4;

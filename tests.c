@@ -5,18 +5,17 @@
 #include <assert.h>
 #include "funcs.h"
 #include "tests.h"
+#include "macros.h"
 
-#define FG_BG_ANSI "\033[41;97m"
-#define TEST_FALED_ANSI "\033[44;97m"
-#define RESET_ANSI "\033[0m"
-#define ARRAY_SIZE(array) sizeof(tests) / sizeof(tests[0])
 
 struct TestData {
     double a, b, c;
     int count_of_roots;
     double x1, x2;
 };
+ 
 
+//TODO: align
 const struct TestData tests[] = {{.a=1, .b=-8, .c=-9, .count_of_roots=2, .x1=-1, .x2=9},
                                  {.a=0, .b=0, .c=0, .count_of_roots=-1, .x1=0, .x2=0},
                                  {.a=9, .b=1, .c=10, .count_of_roots=0, .x1=0, .x2=0},
@@ -40,20 +39,19 @@ void TestGeneralSolve() {
 }
 
 
-int IncorrectNumberOfRootsPrint(int true_count, int false_count, int number_of_test) {
-    /*if (true_count != -1) {
+int IncorrectNumberOfRootsPrint(int true_count, int false_count, int number_of_test,
+                                    struct TestData test) {
+    if (true_count != -1) {
         printf("Expected: %d roots, ", true_count);
     } else if (true_count == -1) {
         printf("Expected: root - every number, ");
-    } */
-    true_count != -1 ? printf("Expected: %d roots, ", true_count) : printf("Expected: root - every number, ");
-    false_count != -1 ? printf("got: %d roots\n", false_count) : printf("got: root - every number");
-    /* if (false_count != -1) {
+    } 
+    if (false_count != -1) {
         printf("got: %d roots\n", false_count);
     }
     else if (false_count == -1) {
         printf("got: root - every number\n");
-    }*/
+    }
 
     printf("\n");
 }
@@ -108,18 +106,18 @@ int CorrectNumberOfRootsPrint(int supposed_count_of_roots,
 }
 
 
-int OneTestQuadEq(struct TestData test, int count) {
+int OneTestQuadEq(struct TestData test, int test_number) {
     double supposed_x1 = 0, supposed_x2 = 0;
     int supposed_count_of_roots = GeneralCaseSolve(test.a, test.b, test.c, &supposed_x1, &supposed_x2);
 
     if (supposed_count_of_roots != test.count_of_roots) { // Если количество корней найдено неверно
-        printf(TEST_FALED_ANSI "Test number %d faled" RESET_ANSI "\n" , count);
+        printf(TEST_FALED_ANSI "Test number %d faled" RESET_ANSI "\n" , test_number);
         printf("coefficients: a=%lg , b=%lg, c=%lg\n", test.a, test.b, test.c);
-        IncorrectNumberOfRootsPrint(test.count_of_roots, supposed_count_of_roots, count);
+        IncorrectNumberOfRootsPrint(test.count_of_roots, supposed_count_of_roots, test_number, test);
     } else if (!IsItThisNumber(test.count_of_roots, 0) && !IsItThisNumber(test.count_of_roots, -1)) { // Если количество корней найдено верно
             CorrectNumberOfRootsPrint(supposed_count_of_roots,
                                       test.a, test.b, test.c, supposed_x1, supposed_x2,
-                                      test.x1, test.x2, count);
+                                      test.x1, test.x2, test_number);
         
     }
 }

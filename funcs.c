@@ -6,21 +6,13 @@
 #include <assert.h>
 #include <stdlib.h>
 #include "funcs.h"
-
+#include "macros.h"
 // TODO: separate assert to other file
-#define MyAssert(result) AssertOfMusa(result, __FILE__, __PRETTY_FUNCTION__, __LINE__)
-#define FG_BG_ANSI "\033[41;97m"
-#define RESET_ANSI "\033[0m"
+
 
 const double ACCURACY = 1e-6;
 const int INFINITE_ROOTS = -1;
 
-// ANSI escape sequences
-// C predefined macros
-// __pretty_function__
-// реализовать свой MyAssert
-
-// NDEBUG - значит что дебага НЕТ
 
 //‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐
 //! Calculate discriminant // TODO: add more info, e.g. what values coefficients can have? Also, move docs to header file
