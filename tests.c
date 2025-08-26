@@ -87,8 +87,8 @@ int CorrectNumberOfRootsPrint(int supposed_count_of_roots,
                                     double true_x1, double true_x2,
                                     int count) {
     
-    SortRootsAscending(&supposed_x1, &supposed_x2); 
-    SortRootsAscending(&true_x1, &true_x2); // NOTE: this could be an assert?
+    SortAscending(&supposed_x1, &supposed_x2); 
+    SortAscending(&true_x1, &true_x2); // NOTE: this could be an assert?
 
     if (!IsItThisNumber(supposed_x1, true_x1) || !IsItThisNumber(supposed_x2, true_x2)) {
         printf(TEST_FALED_ANSI "Test number %d faled" RESET_ANSI "\n", count);

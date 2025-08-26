@@ -197,7 +197,7 @@ int QuadraticEquationSolve(double a, double b, double c, double* x1, double* x2)
 //!
 //! @return have the roots been sorted (true or false)
 //‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐
-bool SortRootsAscending(double* x1, double* x2) {
+bool SortAscending(double* x1, double* x2) {
     if (*x2 == NAN) {
         return false;
     }
@@ -216,4 +216,19 @@ int ClearBuffer() {
     char ch = getchar();
     while (ch != '\n' && ch != EOF){
         ch = getchar();}
+}
+
+
+bool CompareTwoStrings(const char* first_st, const char* second_st) {
+    int first_size = ARRAY_SIZE(first_st);
+    int second_size = ARRAY_SIZE(second_st);
+    if (first_size != second_size) {
+        return false;
+    }
+    for (int i = 0; i < second_size; i++) {
+        if (first_st[i] != second_st[i]) {
+            return false;
+        }
+    }
+    return true;
 }

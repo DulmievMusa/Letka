@@ -9,3 +9,4 @@ main.o
 funcs.o
 tests.o
 my_asserts.o
+main.exe

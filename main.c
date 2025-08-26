@@ -8,7 +8,6 @@
 #include "macros.h"
 #include "my_asserts.h"
 
-
 const double ACCURACY = 1e-4;
 const int INFINITE_ROOTS = -1;
 
@@ -17,11 +16,10 @@ int InputCoefficients(double* a, double* b, double* c);
 int PrintRoots(int n, double x1, double x2);
 
 // TODO: separate tests into separate file with separate main
-int main() {
-    RunTests();
+int main(int argc, char *argv[]) {
     printf(TEST_FALED_ANSI "Meeeeeeeeeeeeooooooooow Meow Meow" RESET_ANSI "\n");
+    RunTests();
     double a = 0, b = 0, c = 0, x1 = 0, x2 = 0;
-    int n = 0;
     printf("This program solve quad. equation ax^2+bx+c=0\n");
     printf("Input coefficient a, coefficient b, coefficient c in different lines:\n");
     
@@ -29,9 +27,9 @@ int main() {
 
     printf("You have entered: a: %lg, b: %lg c: %lg\n", a, b, c);
 
-    n = GeneralCaseSolve(a, b, c, &x1, &x2); // Решение уравнения // TODO: bring declarations closer to uses, in this case it's better to declare it right here
+    int n_roots = GeneralCaseSolve(a, b, c, &x1, &x2); // Решение уравнения // TODO: bring declarations closer to uses, in this case it's better to declare it right here
     
-    PrintRoots(n, x1, x2);
+    PrintRoots(n_roots, x1, x2);
 
     return 0;
 }
@@ -71,13 +69,12 @@ int InputCoefficients(double* a, double* b, double* c) {
 int CorrectInputNumber(double* a, char symbol) { // TODO: better name? InputNumberEnsuringCorrectness (or just InputNumber)
 
     MyAssert(a != NULL);
-    int flag = scanf("%lg", a);
-    while (flag == 0 || (flag == 1 && (getchar() != '\n'))) {
+    int count = scanf("%lg", a);
+    while (count == 0 || (count == 1 && (getchar() != '\n'))) {
         printf("You entered not a number. Try again\n");
         printf("%c: ", symbol);
         ClearBuffer();
-        flag = scanf("%lg", a);
-        
+        count = scanf("%lg", a);
     }
     return 0;
 }
