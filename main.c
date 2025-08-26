@@ -6,7 +6,7 @@
 #include "tests.h"
 #include "funcs.h"
 #include "macros.h"
-
+#include "my_asserts.h"
 
 
 const double ACCURACY = 1e-4;
@@ -19,6 +19,7 @@ int PrintRoots(int n, double x1, double x2);
 // TODO: separate tests into separate file with separate main
 int main() {
     RunTests();
+    printf(TEST_FALED_ANSI "Meeeeeeeeeeeeooooooooow Meow Meow" RESET_ANSI "\n");
     double a = 0, b = 0, c = 0, x1 = 0, x2 = 0;
     int n = 0;
     printf("This program solve quad. equation ax^2+bx+c=0\n");

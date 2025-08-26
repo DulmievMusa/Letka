@@ -6,6 +6,7 @@
 #include "funcs.h"
 #include "tests.h"
 #include "macros.h"
+#include "my_asserts.h"
 
 
 struct TestData {

@@ -4,4 +4,8 @@ tesst.c
 html
 latex
 trash.c
-Makefile
+
+main.o
+funcs.o
+tests.o
+my_asserts.o

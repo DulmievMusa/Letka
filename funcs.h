@@ -1,4 +1,3 @@
-
 // TODO: header guards, read about them in K&R
 //     B2.h
 //   /     \
