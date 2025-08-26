@@ -53,21 +53,26 @@ bool TestGeneralSolve() {
 int IncorrectNumberOfRootsPrint(int true_count, int false_count, int number_of_test) {
     // TODO: it's better to write it in a more structure way
     // E.g.: "Expected: 2 roots, got 1"
-    if (false_count == 2 || false_count == 1) {
+    if (true_count != -1) {
+        printf("Expected: %d roots, ", true_count);
+    } else if (true_count == -1) {
+        printf("Expected: root - every number, ");
+    }
+    
+    /*if (false_count == 2 || false_count == 1) {
         printf("Program thinks that equation have %d roots\n", false_count);
     } else if (false_count == 0) {
         printf("Program thinks that equation doesn't have any roots\n");
     } else if (false_count == -1) {
         printf("Program thinks that equation have infinite roots\n");
-    }
+    }*/
     // TODO: never use more than three newlines in a row
 
-    if (true_count == 2 || true_count == 1) {
-        printf("But it must have %d roots\n", true_count);
-    } else if (true_count == 0) {
-        printf("But it must have no roots\n");
-    } else if (true_count == -1) {
-        printf("But it must have infinite roots\n");
+    if (false_count != -1) {
+        printf("got: %d roots\n", false_count);
+    }
+    else if (false_count == -1) {
+        printf("got: root - every number\n");
     }
 
 
@@ -104,8 +109,8 @@ int CorrectNumberOfRootsPrint(int supposed_count_of_roots,
                                     double true_x1, double true_x2,
                                     int count) {
     
-    SortRootsRising(&supposed_x1, &supposed_x2); // NOTE: Ascending
-    SortRootsRising(&true_x1, &true_x2); // NOTE: this could be an assert?
+    SortRootsAscending(&supposed_x1, &supposed_x2); // NOTE: Ascending
+    SortRootsAscending(&true_x1, &true_x2); // NOTE: this could be an assert?
     if (!IsItThisNumber(supposed_x1, true_x1) || !IsItThisNumber(supposed_x2, true_x2)) {
         printf(TEST_FALED_ANSI "Test number %d faled" RESET_ANSI "\n", count); // TODO: fix indentation
         printf("Coefficients: a=%lg , b=%lg, c=%lg\n", a, b, c);

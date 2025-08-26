@@ -204,7 +204,7 @@ int QuadraticEquationSolve(double a, double b, double c, double* x1, double* x2)
 //!
 //! @return have the roots been sorted (true or false)
 //‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐
-bool SortRootsRising(double* x1, double* x2) {
+bool SortRootsAscending(double* x1, double* x2) {
     if (*x2 == NAN) { // *
         return false;
     }
