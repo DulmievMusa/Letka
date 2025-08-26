@@ -104,8 +104,8 @@ int GeneralCaseSolve(double a, double b, double c, double* x1, double* x2) {
     MyAssert(x1 != NULL);
     MyAssert(x2 != NULL);
     MyAssert(x1 != x2);
-    *x1 = 0; // Удалить, если всё сломалось
-    *x2 = 0; // Удалить, если всё сломалось 
+    *x1 = 0; // HERE
+    *x2 = 0; // HERE
 
     if (IsItThisNumber(a, 0)) { //Если a == 0
         return LinearEquationSolve(b, c, x1, x2);
@@ -205,7 +205,7 @@ int QuadraticEquationSolve(double a, double b, double c, double* x1, double* x2)
 //! @return have the roots been sorted (true or false)
 //‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐
 bool SortRootsAscending(double* x1, double* x2) {
-    if (*x2 == NAN) { // *
+    if (*x2 == NAN) {
         return false;
     }
     double buffer = 0;
@@ -213,7 +213,7 @@ bool SortRootsAscending(double* x1, double* x2) {
         buffer = *x2;
         *x2 = *x1;
         *x1 = buffer;
-        return true; // TODO: do you ever use this return value?
+        return true;
     } else {
         return false;
     }
@@ -224,7 +224,7 @@ int AssertOfMusa(int result, const char *file, const char *function, int line) {
     if (!result) {
         printf(FG_BG_ANSI "Assertion failed: " RESET_ANSI "\n");
         printf(FG_BG_ANSI "File: %s " RESET_ANSI "\n", file);
-        printf(FG_BG_ANSI "Function: %s " RESET_ANSI "\n", function); // TODO: \033[41;97m should be a variable, also add more spaces
+        printf(FG_BG_ANSI "Function: %s " RESET_ANSI "\n", function);
         printf(FG_BG_ANSI "Line: %d " RESET_ANSI "\n", line);
         printf("\n");
         abort();
@@ -234,6 +234,6 @@ int AssertOfMusa(int result, const char *file, const char *function, int line) {
 
 int ClearBuffer() {
     char ch = getchar();
-    while (ch != '\n' && ch != EOF){ // TODO: extract this to a function, skip_line?
+    while (ch != '\n' && ch != EOF){
         ch = getchar();}
 }

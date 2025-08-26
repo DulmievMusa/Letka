@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <math.h>
 #include <stdbool.h>
-// #define NDEBUG // TODO: it's better to use this with an option, -DNDEBUG
+// #define NDEBUG // it's better to use this with an option, -DNDEBUG
 #include <assert.h>
 #include "funcs.h"
 #include "tests.h"
@@ -12,7 +12,7 @@
 #define ARRAY_SIZE(array) sizeof(tests) / sizeof(tests[0])
 
 struct TestData {
-    double a,b,c; // TODO: spaces
+    double a, b, c;
     int count_of_roots;
     double x1, x2;
 };
@@ -31,15 +31,12 @@ int RunTests() {
 }
 
 
-bool TestGeneralSolve() {
+void TestGeneralSolve() {
     const int count_of_tests = ARRAY_SIZE(tests);
 
     for (int i = 0; i < count_of_tests; i++) {
-        
         OneTestQuadEq(tests[i], i + 1);
-    }
-    
-    return true; // TODO: why would you return true if this function never returns false? Make it void
+    } 
 }
 
 
@@ -93,8 +90,9 @@ int CorrectNumberOfRootsPrint(int supposed_count_of_roots,
     
     SortRootsAscending(&supposed_x1, &supposed_x2); 
     SortRootsAscending(&true_x1, &true_x2); // NOTE: this could be an assert?
+
     if (!IsItThisNumber(supposed_x1, true_x1) || !IsItThisNumber(supposed_x2, true_x2)) {
-        printf(TEST_FALED_ANSI "Test number %d faled" RESET_ANSI "\n", count); // TODO: fix indentation
+        printf(TEST_FALED_ANSI "Test number %d faled" RESET_ANSI "\n", count);
         printf("Coefficients: a=%lg , b=%lg, c=%lg\n", a, b, c);
         printf("Program found %d root(s)\n", supposed_count_of_roots);
     }            

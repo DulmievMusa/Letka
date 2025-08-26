@@ -1,3 +1,4 @@
+
 // TODO: header guards, read about them in K&R
 //     B2.h
 //   /     \
@@ -16,3 +17,4 @@ int QuadraticEquationSolve(double a, double b, double c, double* x1, double* x2)
 bool SortRootsAscending(double* x1, double* x2);
 int AssertOfMusa(int result, const char *file, const char *function, int line);
 int ClearBuffer();
+

@@ -10,7 +10,7 @@ int CorrectNumberOfRootsPrint(int supposed_count_of_roots, // TODO: verb usually
                                     double true_x1, double true_x2,
                                     int count);
 int IncorrectNumberOfRootsPrint(int true_count, int false_count, int number_of_test); // TODO: better name
-bool TestGeneralSolve(); // TODO: better name
+void TestGeneralSolve(); // TODO: better name
 int OneTestQuadEq(struct TestData test, int count); // TODO: test_number instead of "count", also better name. Try to name with verb first.
 
 #endif
