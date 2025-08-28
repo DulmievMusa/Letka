@@ -1,3 +1,5 @@
+#ifndef STRING_FUNCTION_H
+#define STRING_FUNCTION_H
 
 //‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐
 //! Clear the command line input buffer
@@ -26,3 +28,5 @@ bool CompareTwoStrings(char* first_string, const char* second_string);
 //! @return length of a string.
 //‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐
 int FindStringLength(const char* string);
+
+#endif

@@ -13,13 +13,6 @@
 #include "string_functions.h"
 
 
-void Meow();
-void Greeting(double* a, double *b, double *c, double* x1, double* x2);
-int InputCoefficients(double* a, double* b, double* c);
-int InputNumber(double* a, char symbol);
-int PrintRoots(int n, double x1, double x2);
-
-
 int main(int number_of_arguments, char *argument_values[]) {
     Meow();
     if (number_of_arguments > 1) {

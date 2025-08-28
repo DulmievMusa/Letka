@@ -1,4 +1,5 @@
-
+#ifndef CALCULATE_FUNCTION_H
+#define CALCULATE_FUNCTION_H
 
 //‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐
 //! Calculate discriminant
@@ -99,3 +100,5 @@ int QuadraticEquationSolve(double a, double b, double c, double* x1, double* x2)
 //! @note if any of the arguments is NAN or INF, then MyAssert is called and the program terminates.
 //‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐
 bool SortAscending(double* x1, double* x2);
+
+#endif

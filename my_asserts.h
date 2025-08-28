@@ -1,18 +1,20 @@
-#define MyAssert(result) AssertOfMusa(result, __FILE__, __PRETTY_FUNCTION__, __LINE__)
+#ifndef MY_ASSERTS_H
+#define MY_ASSERTS_H
+
+#define MyAssert(need_to_call_assert) AssertOfMusa(need_to_call_assert, __FILE__, __PRETTY_FUNCTION__, __LINE__)
 
 
 //‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐
-//! Stops the program if the result argument != 0
+//! Stops the program if the need_to_call_assert argument != 0
 //!
 //!
-//! @param [in]  result   
-//! @param [in]  file   c‐coefficient
-//! @param [out] x1  Pointer to the 1st root
-//! @param [out] x2  Pointer to the 2nd root
+//! @param [in]  need_to_call_assert should the program be stopped
+//! @param [in]  file   name of file where Assert was called
+//! @param [in]  function   name of founction where Assert was called
+//! @param [in]  line  number of file where Assert was called
 //!
-//! @return Number of roots
 //!
-//! @note   In case of infinite number of roots,
-//!         returns INFINITE_ROOTS (-1).
-//!         If one of the arguments is NAN or INF, then MyAssert is called and the program terminates.
-int AssertOfMusa(int need_to_call_assert, const char *file, const char *function, int line);
+//‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐
+void AssertOfMusa(int need_to_call_assert, const char *file, const char *function, int line);
+
+#endif
