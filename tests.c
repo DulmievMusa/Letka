@@ -17,13 +17,6 @@ struct TestData {
 };
  
 
-//TODO: align
-const struct TestData tests[] = {{.a=1, .b=-8, .c=-9, .count_of_roots=2, .x1=-1, .x2=9},
-                                 {.a=0, .b=0, .c=0, .count_of_roots=-1, .x1=0, .x2=0},
-                                 {.a=9, .b=1, .c=10, .count_of_roots=0, .x1=0, .x2=0},
-                                 {.a=1, .b=-8, .c=-9, .count_of_roots=1, .x1=0, .x2=0},
-                                 {.a=1, .b=-8, .c=-9, .count_of_roots=2, .x1=34, .x2=3555},
-                                 {.a=1, .b=-8, .c=-9, .count_of_roots=-1, .x1=9, .x2=-1}};
 
 
 int RunTests() {
@@ -33,12 +26,27 @@ int RunTests() {
 
 
 void TestQuadraticEquation() {
+    int i = 0;
+    FILE *tests_file;
+    struct TestData one_test;
+    tests_file = fopen("QuadrumEquationTestData.txt", "r");
+    while (fscanf(tests_file, "%lg %lg %lg %d %lg %lg",
+            &(one_test.a), &(one_test.b), &(one_test.c),
+            &(one_test.count_of_roots),
+            &(one_test.x1), &(one_test.x2)) != EOF) {
+
+            OneTestQuadraticEquation(one_test, ++i);
+    }
+
+}
+
+/* void TestQuadraticEquation() {
     const int count_of_tests = ARRAY_SIZE(tests);
 
     for (int i = 0; i < count_of_tests; i++) {
         OneTestQuadraticEquation(tests[i], i + 1);
     } 
-}
+} */
 
 
 void IncorrectNumberOfRootsPrint(int true_count, int false_count) {

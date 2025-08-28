@@ -12,6 +12,8 @@
 #include "calculate_functions.h"
 #include "string_functions.h"
 
+// strlen strcpy strcat strcmp strchr strstr strdup
+
 
 int main(int number_of_arguments, char *argument_values[]) {
     Meow();

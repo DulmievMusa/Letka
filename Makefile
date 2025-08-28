@@ -7,7 +7,9 @@ run: main.exe
 	.\main.exe
 
 %.o: %.c
-	g++ ${Compilation_Flags_W} -c $^ -o $@ 
+	g++ ${Compilation_Flags_W} -c $< -o $@
 
 clean:
 	rm main.exe *.o
+
+main.o: main.h consts.h calculate_functions.h string_functions.h
