@@ -9,21 +9,27 @@
 #include "string_functions.h"
 
 
-int ClearBuffer() {
-    char ch = getchar();
-    while (ch != '\n' && ch != EOF){
-        ch = getchar();}
+void ClearBuffer() {
+    char symbol = getchar();
+    while (symbol != '\n' && symbol != EOF){
+        symbol = getchar();
+    }
 }
 
 
-bool CompareTwoStrings(char* first_st, const char* second_st) {
-    int first_size = FindStringLength(first_st);
-    int second_size = FindStringLength(second_st);
+bool CompareTwoStrings(char* first_string, const char* second_string) {
+
+    MyAssert(first_string != NULL);
+    MyAssert(second_string != NULL);
+    MyAssert(first_string != second_string);
+
+    int first_size = FindStringLength(first_string);
+    int second_size = FindStringLength(second_string);
     if (first_size != second_size) {
         return false;
     }
     for (int i = 0; i < second_size; i++) {
-        if (first_st[i] != second_st[i]) {
+        if (first_string[i] != second_string[i]) {
             return false;
         }
     }
@@ -32,6 +38,9 @@ bool CompareTwoStrings(char* first_st, const char* second_st) {
 
 
 int FindStringLength(const char* string) {
+    
+    MyAssert(string != NULL);
+
     int index = 0;
     while (string[index] != '\0') {
         index++;

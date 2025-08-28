@@ -58,25 +58,7 @@ double Abs(double n) {
 
 
 
-//‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐
-//! Solves a square equation ax2 + bx + c = 0
-// TODO: more info, e.g.
-// How it solves it? Analytically? Or with Newton's method? Or some other way?
-// Is it fast?
-// Does it require coefficients to have certain values? E.g. what happens if a is NAN or INF?
-//!
-//!
-//! @param [in]  a   a‐coefficient
-//! @param [in]  b   b‐coefficient
-//! @param [in]  c   c‐coefficient
-//! @param [out] x1  Pointer to the 1st root
-//! @param [out] x2  Pointer to the 2nd root
-//!
-//! @return Number of roots
-//!
-//! @note   In case of infinite number of roots,
-//!         returns INFINITE_ROOTS.
-//‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐
+
 int GeneralCaseSolve(double a, double b, double c, double* x1, double* x2) {
     
     MyAssert(isfinite(a));
@@ -98,20 +80,7 @@ int GeneralCaseSolve(double a, double b, double c, double* x1, double* x2) {
 }
 
 
-//‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐
-//! Solves a square equation bx + c = 0
-//!
-//!
-//! @param [in]  b   b‐coefficient
-//! @param [in]  c   c‐coefficient
-//! @param [out] x1  Pointer to the 1st root
-//! @param [out] x2  Pointer to the 2nd root
-//!
-//! @return Number of roots
-//!
-//! @note   In case of infinite number of roots,
-//!         returns SS_INF_ROOTS.
-//‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐
+
 int LinearEquationSolve(double b, double c, double* x1, double* x2) {
 
     MyAssert(isfinite(b));
@@ -177,15 +146,16 @@ int QuadraticEquationSolve(double a, double b, double c, double* x1, double* x2)
 }
 
 
-//‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐
-//! Sorts two roots in ascending order. The first becomes smaller than the second.
-//!
-//! @param [out] x1  Pointer to the 1st root
-//! @param [out] x2  Pointer to the 2nd root
-//!
-//! @return have the roots been sorted (true or false)
-//‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐
+
 bool SortAscending(double* x1, double* x2) {
+
+    MyAssert(isfinite(*x1));
+    MyAssert(isfinite(*x2));
+    
+    MyAssert(x1 != NULL);
+    MyAssert(x2 != NULL);
+    MyAssert(x1 != x2); 
+
     if (*x2 == NAN) {
         return false;
     }
