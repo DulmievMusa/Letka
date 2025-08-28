@@ -18,15 +18,16 @@ double CalculateDiscriminant(double a, double b, double c);
 //!
 //! @return if two numbers match true, else false
 //‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐
-bool IsItThisNumber(double first, double second);
+bool CheckTwoNumbersMatch(double first_number, double second_number);
 //‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐
-//! returns the modulus of a number
+//! Return the modulus of a number
 //!
 //! @param [out] first  first number
 //! @param [out] second  second number
 //!
 //‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐
 double Abs(double n);
+
 int GeneralCaseSolve(double a, double b, double c, double* x1, double* x2);
 int LinearEquationSolve(double b, double c, double* x1, double* x2);
 int QuadraticEquationSolve(double a, double b, double c, double* x1, double* x2);

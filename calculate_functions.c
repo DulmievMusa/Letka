@@ -12,7 +12,9 @@
 //‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐
 //! Calculate discriminant // TODO: add more info, e.g. what values coefficients can have? Also, move docs to header file
 //!
-//! @param [in] n number
+//! @param [in] a a-coefficient
+//! @param [in] a b-coefficient
+//! @param [in] a c-coefficient
 //!
 //! @return Calculated discriminant
 //‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐
@@ -24,24 +26,17 @@ double CalculateDiscriminant(double a, double b, double c) {
     return b*b - 4*a*c;
 }
 
-//‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐
-//! Checks whether two numbers are the same, taking into account the calculation error
-//!
-//! @param [in]  first first number
-//! @param [in]  second second number
-//!
-//! @return if two numbers match true, else false
-//‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐
-bool IsItThisNumber(double first, double second) {
 
-    MyAssert(isfinite(first));
-    MyAssert(isfinite(second));
+bool CheckTwoNumbersMatch(double first_number, double second_number) {
 
-    if (first * second < 0) {
+    MyAssert(isfinite(first_number));
+    MyAssert(isfinite(second_number));
+
+    if (first_number * second_number < 0) {
         return false;
     }
-    double diff = Abs(first - second);
-    return diff < ACCURACY;
+    double difference = Abs(first_number - second_number);
+    return difference < ACCURACY;
 }
 
 
@@ -91,12 +86,12 @@ int GeneralCaseSolve(double a, double b, double c, double* x1, double* x2) {
     MyAssert(x1 != NULL);
     MyAssert(x2 != NULL);
     MyAssert(x1 != x2);
-    *x1 = 0; // HERE
-    *x2 = 0; // HERE
+    *x1 = 0;
+    *x2 = 0;
 
-    if (IsItThisNumber(a, 0)) { //Если a == 0
+    if (CheckTwoNumbersMatch(a, 0)) {
         return LinearEquationSolve(b, c, x1, x2);
-    } else { // Если a != 0
+    } else {
         return QuadraticEquationSolve(a, b, c, x1, x2);
     } 
 
@@ -126,13 +121,13 @@ int LinearEquationSolve(double b, double c, double* x1, double* x2) {
     MyAssert(x2 != NULL);
     MyAssert(x1 != x2);
 
-    if (!IsItThisNumber(b, 0)) { // Если b != 0
+    if (!CheckTwoNumbersMatch(b, 0)) { // Если b != 0
         *x1 = Abs(-c / b); // TODO: indentation
         *x2 = NAN; // HERE
         return 1;
     } 
     else { // Если b == 0
-        if (!IsItThisNumber(c, 0)) { // Если с != 0
+        if (!CheckTwoNumbersMatch(c, 0)) { // Если с != 0
             return 0;
         } else { // Если c == 0
             return INFINITE_ROOTS; // Бесконечное количество корней
@@ -173,7 +168,7 @@ int QuadraticEquationSolve(double a, double b, double c, double* x1, double* x2)
         *x1 = (-b + sqrt_dis) / (2*a);
         *x2 = (-b - sqrt_dis) / (2*a);
         return 2;
-    } else if (IsItThisNumber(discriminant, 0)) {
+    } else if (CheckTwoNumbersMatch(discriminant, 0)) {
         *x1 = *x2 = -b / (2*a);
         return 1;
     } else {
@@ -184,7 +179,6 @@ int QuadraticEquationSolve(double a, double b, double c, double* x1, double* x2)
 
 //‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐
 //! Sorts two roots in ascending order. The first becomes smaller than the second.
-//!
 //!
 //! @param [out] x1  Pointer to the 1st root
 //! @param [out] x2  Pointer to the 2nd root

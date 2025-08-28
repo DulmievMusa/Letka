@@ -19,7 +19,7 @@ int InputCoefficients(double* a, double* b, double* c);
 int InputNumber(double* a, char symbol);
 int PrintRoots(int n, double x1, double x2);
 
-// TODO: separate tests into separate file with separate main
+
 int main(int number_of_arguments, char *argument_values[]) {
     Meow();
     if (number_of_arguments > 1) {

@@ -24,7 +24,6 @@ bool CompareTwoStrings(char* first_st, const char* second_st) {
     }
     for (int i = 0; i < second_size; i++) {
         if (first_st[i] != second_st[i]) {
-            printf("\n%c %c\n", first_st[i], second_st[i]);
             return false;
         }
     }
