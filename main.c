@@ -4,14 +4,20 @@
 #include <assert.h>
 #include <stdlib.h>
 #include "tests.h"
-#include "funcs.h"
 #include "macros.h"
 #include "my_asserts.h"
 #include <string.h>
 #include "main.h"
+#include "consts.h"
+#include "calculate_functions.h"
+#include "string_functions.h"
 
-const double ACCURACY = 1e-4;
-const int INFINITE_ROOTS = -1;
+
+void Meow();
+void Greeting(double* a, double *b, double *c, double* x1, double* x2);
+int InputCoefficients(double* a, double* b, double* c);
+int InputNumber(double* a, char symbol);
+int PrintRoots(int n, double x1, double x2);
 
 // TODO: separate tests into separate file with separate main
 int main(int number_of_arguments, char *argument_values[]) {
@@ -28,6 +34,20 @@ int main(int number_of_arguments, char *argument_values[]) {
     
     PrintRoots(n_roots, x1, x2);
     return 0;
+}
+
+
+void Greeting(double* a, double *b, double *c, double* x1, double* x2) {
+    printf("This program solve quad. equation ax^2+bx+c=0\n");
+    printf("Input coefficient a, coefficient b, coefficient c in different lines:\n");
+    
+    InputCoefficients(a, b, c);
+
+    printf("You have entered: a: %lg, b: %lg c: %lg\n", *a, *b, *c);
+}
+
+void Meow() {
+    printf(TEST_FALED_ANSI "Meeeeeeeeeeeeooooooooow Meow Meow" RESET_ANSI "\n");
 }
 
 
@@ -78,3 +98,4 @@ int PrintRoots(int n, double x1, double x2) {
         printf("Every number is a root");
     }
 }
+

@@ -1,6 +1,7 @@
 {
     "files.associations": {
         "stdbool.h": "c",
-        "my_asserts.h": "c"
+        "my_asserts.h": "c",
+        "string.h": "c"
     }
 }

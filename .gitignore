@@ -6,7 +6,9 @@ latex
 trash.c
 
 main.o
-funcs.o
 tests.o
 my_asserts.o
+string_functions.o
+calculate_functions.o
+
 main.exe

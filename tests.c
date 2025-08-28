@@ -3,10 +3,11 @@
 #include <stdbool.h>
 // #define NDEBUG // it's better to use this with an option, -DNDEBUG
 #include <assert.h>
-#include "funcs.h"
 #include "tests.h"
 #include "macros.h"
 #include "my_asserts.h"
+#include "calculate_functions.h"
+#include "string_functions.h"
 
 
 struct TestData {
