@@ -8,7 +8,7 @@
 #include "funcs.h"
 #include "macros.h"
 #include "my_asserts.h"
-// TODO: separate assert to other file
+#include "main.h"
 
 
 const double ACCURACY = 1e-6;
@@ -219,16 +219,40 @@ int ClearBuffer() {
 }
 
 
-bool CompareTwoStrings(const char* first_st, const char* second_st) {
-    int first_size = ARRAY_SIZE(first_st);
-    int second_size = ARRAY_SIZE(second_st);
+bool CompareTwoStrings(char* first_st, const char* second_st) {
+    int first_size = FindStringLength(first_st);
+    int second_size = FindStringLength(second_st);
     if (first_size != second_size) {
         return false;
     }
     for (int i = 0; i < second_size; i++) {
         if (first_st[i] != second_st[i]) {
+            printf("\n%c %c\n", first_st[i], second_st[i]);
             return false;
         }
     }
     return true;
+}
+
+
+int FindStringLength(const char* string) {
+    int index = 0;
+    while (string[index] != '\0') {
+        index++;
+    }
+    return index;
+}
+
+
+void Greeting(double* a, double *b, double *c, double* x1, double* x2) {
+    printf("This program solve quad. equation ax^2+bx+c=0\n");
+    printf("Input coefficient a, coefficient b, coefficient c in different lines:\n");
+    
+    InputCoefficients(a, b, c);
+
+    printf("You have entered: a: %lg, b: %lg c: %lg\n", *a, *b, *c);
+}
+
+void Meow() {
+    printf(TEST_FALED_ANSI "Meeeeeeeeeeeeooooooooow Meow Meow" RESET_ANSI "\n");
 }
