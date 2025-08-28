@@ -21,7 +21,7 @@ int main(int number_of_arguments, char *argument_values[]) {
         }
     }
     double a = 0, b = 0, c = 0, x1 = 0, x2 = 0;
-    Greeting(&a, &b, &c, &x1, &x2);
+    Greeting(&a, &b, &c);
 
     int n_roots = GeneralCaseSolve(a, b, c, &x1, &x2); // Решение уравнения
     
@@ -30,7 +30,7 @@ int main(int number_of_arguments, char *argument_values[]) {
 }
 
 
-void Greeting(double* a, double *b, double *c, double* x1, double* x2) {
+void Greeting(double* a, double *b, double *c) {
     printf("This program solve quad. equation ax^2+bx+c=0\n");
     printf("Input coefficient a, coefficient b, coefficient c in different lines:\n");
     
@@ -75,7 +75,7 @@ int InputNumber(double* a, char symbol) { // TODO: better name? InputNumberEnsur
 }
 
 
-int PrintRoots(int n, double x1, double x2) {
+void PrintRoots(int n, double x1, double x2) {
     
     MyAssert(isfinite(x1));
 
@@ -91,4 +91,12 @@ int PrintRoots(int n, double x1, double x2) {
         printf("Every number is a root");
     }
 }
+
+
+
+
+
+
+
+
 

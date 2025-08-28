@@ -41,8 +41,7 @@ void TestQuadraticEquation() {
 }
 
 
-int IncorrectNumberOfRootsPrint(int true_count, int false_count, int number_of_test,
-                                    struct TestData test) {
+void IncorrectNumberOfRootsPrint(int true_count, int false_count) {
     if (true_count != -1) {
         printf("Expected: %d roots, ", true_count);
     } else if (true_count == -1) {
@@ -82,7 +81,7 @@ int IncorrectNumberOfRootsPrint(int true_count, int false_count, int number_of_t
 // printf("%s", buffer); // prints hello!\n
 
 
-int CorrectNumberOfRootsPrint(int supposed_count_of_roots,
+void CorrectNumberOfRootsPrint(int supposed_count_of_roots,
                                     double a, double b, double c,
                                     double calculated_by_funcrion_x1, double calculated_by_funcrion_x2,
                                     double true_x1, double true_x2,
@@ -108,14 +107,14 @@ int CorrectNumberOfRootsPrint(int supposed_count_of_roots,
 }
 
 
-int OneTestQuadraticEquation(struct TestData test, int test_number) {
+void OneTestQuadraticEquation(struct TestData test, int test_number) {
     double supposed_x1 = 0, supposed_x2 = 0;
     int supposed_count_of_roots = GeneralCaseSolve(test.a, test.b, test.c, &supposed_x1, &supposed_x2);
 
     if (supposed_count_of_roots != test.count_of_roots) { // Если количество корней найдено неверно
         printf(TEST_FALED_ANSI "Test number %d faled" RESET_ANSI "\n" , test_number);
         printf("coefficients: a=%lg , b=%lg, c=%lg\n", test.a, test.b, test.c);
-        IncorrectNumberOfRootsPrint(test.count_of_roots, supposed_count_of_roots, test_number, test);
+        IncorrectNumberOfRootsPrint(test.count_of_roots, supposed_count_of_roots);
     } else if (!CheckTwoNumbersMatch(test.count_of_roots, 0) && !CheckTwoNumbersMatch(test.count_of_roots, -1)) { // Если количество корней найдено верно
             CorrectNumberOfRootsPrint(supposed_count_of_roots,
                                       test.a, test.b, test.c, supposed_x1, supposed_x2,

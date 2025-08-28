@@ -10,7 +10,7 @@
 
 
 void ClearBuffer() {
-    char symbol = getchar();
+    int symbol = getchar();
     while (symbol != '\n' && symbol != EOF){
         symbol = getchar();
     }

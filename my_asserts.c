@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "macros.h"
+#include "my_asserts.h"
 
 void AssertOfMusa(int need_to_call_assert, const char *file, const char *function, int line) {
     if (!need_to_call_assert) {

@@ -12,3 +12,5 @@ string_functions.o
 calculate_functions.o
 
 main.exe
+
+trash.txt

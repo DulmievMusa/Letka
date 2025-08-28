@@ -28,7 +28,7 @@ int InputNumber(double* a, char symbol);
 //! @param [in] x2 second root 
 //!
 //‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐
-int PrintRoots(int n, double x1, double x2);
+void PrintRoots(int n, double x1, double x2);
 
 //‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐
 //! Greets the user and calls the InputCoefficients function
@@ -42,7 +42,7 @@ int PrintRoots(int n, double x1, double x2);
 //!
 //!
 //‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐
-void Greeting(double* a, double *b, double *c, double* x1, double* x2);
+void Greeting(double* a, double *b, double *c);
 
 //‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐‐
 //! Meow!
